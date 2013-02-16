@@ -1,6 +1,11 @@
 require 'bundler/setup'
 require 'omnibus'
 
+Omnibus.setup do |o|
+	o.config.install_dir = "/opt/puppet-omnibus"
+	Omnibus::CleanTasks.define!
+end
+
 overrides = Omnibus::Overrides.overrides
 
 Omnibus.projects("config/projects/*.rb")
@@ -15,8 +20,6 @@ known_libs = [/libz\.so/, /libssl\.so/, /libcrypto\.so/, /libyaml\.so/]
 known_libs.each do |lib|
 	Omnibus::HealthCheck::WHITELIST_LIBS.push(lib)
 end
-
-puts Omnibus::HealthCheck::WHITELIST_LIBS
 
 desc "Print the name and version of all components"
 task :versions do
