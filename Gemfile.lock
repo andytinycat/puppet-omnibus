@@ -1,6 +1,6 @@
 GIT
-  remote: https://github.com/opscode/omnibus-ruby
-  revision: 6fa5ab234f31fd2438bf2a00644039941fc725f5
+  remote: https://github.com/andytinycat/omnibus-ruby
+  revision: efed0b50ddb429438030e0585cfd17c9a6a6d0e4
   specs:
     omnibus (0.5.3)
       fpm (= 0.3.11)
