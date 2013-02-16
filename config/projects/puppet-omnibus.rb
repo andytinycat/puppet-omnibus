@@ -14,5 +14,5 @@ dependencies ["ruby", "puppet"]
 # Dependency the OS package will be built with
 runtime_dependencies ["libyaml-0-2", "openssl", "zlib1g"]
 
-# Replaces the stock Puppet package
-replaces "puppet"
+# Conflicts with existing Puppet package
+conflicts ["puppet", "puppet-common"]

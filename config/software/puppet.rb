@@ -1,7 +1,7 @@
 name "puppet"
 version "3.1.0"
 
-dependencies ["ruby", "facter", "hiera"]
+dependencies ["ruby", "facter", "hiera", "ruby-augeas", "ruby-shadow"]
 
 build do
 	gem "install puppet -v #{version}" 
