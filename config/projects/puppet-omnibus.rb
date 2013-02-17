@@ -12,7 +12,7 @@ description "Puppet, Facter and Hiera packaged with a source-built Ruby"
 dependencies ["ruby", "puppet"]
 
 # Dependency the OS package will be built with
-runtime_dependencies ["libyaml-0-2", "openssl", "zlib1g"]
+runtime_dependencies ["libyaml-0-2", "openssl", "zlib1g", "libxml2"]
 
 # Conflicts with existing Puppet package
 conflicts ["puppet", "puppet-common"]
