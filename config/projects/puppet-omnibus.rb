@@ -16,3 +16,6 @@ runtime_dependencies ["libyaml-0-2", "openssl", "zlib1g", "libxml2"]
 
 # Conflicts with existing Puppet package
 conflicts ["puppet", "puppet-common"]
+
+# Include init script
+extra_files ["/etc/init.d/puppet"]

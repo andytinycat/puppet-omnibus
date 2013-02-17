@@ -1,6 +1,7 @@
 GIT
   remote: https://github.com/andytinycat/omnibus-ruby
-  revision: 9d6f1d3a5244545880ffdbbe6ee931d2c9b554a0
+  revision: c2d53a4f89f64d618fd56c811bd6132fed8e4f23
+  branch: addextrafiles
   specs:
     omnibus (0.5.3)
       fpm (= 0.3.11)
