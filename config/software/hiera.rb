@@ -5,5 +5,5 @@ dependencies ["ruby", "json_pure"]
 
 build do
 	gem "install hiera -v #{version}" 
-	command "ln -s #{install_dir}/embedded/bin/hiera #{install_dir}/bin/hiera"
+	command "if [ ! -L #{install_dir}/bin/hiera ]; then ln -s #{install_dir}/embedded/bin/hiera #{install_dir}/bin/hiera; fi"
 end
