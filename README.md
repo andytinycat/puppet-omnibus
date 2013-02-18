@@ -70,6 +70,20 @@ Testing
 This can be considered extremely alpha, as it's only been tested on Ubuntu 12.04. However, it should
 work on any distribution, except the package dependency names will need to be changed.
 
+Forked version of omnibus-ruby
+------------------------------
+
+The Gemfile uses my fork of omnibus-ruby. The Opscode repo one doesn't let you set these parameters on the final package:
+- maintainer
+- URL
+- Conflicts:
+- description
+
+Also it doesn't provide a way to supply extra paths to FPM to package; we need this so we can package the init script for
+Puppet inside the package.
+
+The fork adds these features (and there's a pull request outstanding against opscode/omnibus-ruby).
+
 Todo
 ----
 
