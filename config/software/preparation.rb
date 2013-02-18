@@ -10,7 +10,7 @@ build do
   block do
     got_all_packages = true
     missing_packages = Array.new
-    %w{openssl libssl-dev zlib1g zlib1g-dev libyaml-0-2 libyaml-dev build-essential libaugeas0 libaugeas-dev pkg-config}.each do |package|
+    %w{openssl libssl-dev zlib1g zlib1g-dev libyaml-0-2 libyaml-dev build-essential libaugeas0 libaugeas-dev pkg-config libreadline6 libreadline6-dev libncurses5 libncurses-dev}.each do |package|
       unless system("dpkg -s #{package} >/dev/null 2>&1")
         got_all_packages = false
         puts "Missing package #{package}"
