@@ -15,7 +15,10 @@ Omnibus.software(overrides, "config/software/*.rb")
 # add the known Ruby system lib dependencies to the
 # HeathCheck whitelist (so Omnibus won't bomb out
 # complaining about links to system libs).
-known_libs = [/libz\.so/, /libssl\.so/, /libcrypto\.so/, /libyaml/, /libaugeas/, /libxml/, /libfa/, /readline/, /ncurses/]
+known_libs = [/libz\.so/, /libssl\.so/, /libcrypto\.so/, /libyaml/, 
+              /libaugeas/, /libxml/, /libfa/, /readline/, /ncurses/,
+              /libgpg-error/, /libxslt/, /libgcrypt/, /libexslt/,
+              /libtinfo/, /libxml/]
 
 known_libs.each do |lib|
 	Omnibus::HealthCheck::WHITELIST_LIBS.push(lib)

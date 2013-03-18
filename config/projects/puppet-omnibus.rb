@@ -2,17 +2,17 @@ name "puppet-omnibus"
 
 install_path    "/opt/puppet-omnibus"
 build_version   "3.1.0"
-build_iteration "1"
+build_iteration "3"
 
 maintainer "Forward Internet Group"
 url "http://www.forward.co.uk"
 description "Puppet, Facter and Hiera packaged with a source-built Ruby"
 
 # Software to build
-dependencies ["ruby", "puppet"]
+dependencies ["ruby", "puppet", "fog", "ruby-aws"]
 
 # Dependency the OS package will be built with
-runtime_dependencies ["libyaml-0-2", "openssl", "zlib1g", "libxml2"]
+runtime_dependencies ["libyaml-0-2", "openssl", "zlib1g", "libxml2", "libxslt1.1", "libtinfo5", "libgpg-error0", "libgcrypt11"]
 
 # Conflicts with existing Puppet package
 conflicts ["puppet", "puppet-common"]
