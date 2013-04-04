@@ -1,2 +1,2 @@
 source "https://rubygems.org"
-gem 'fpm-cookery', :git => 'https://github.com/bernd/fpm-cookery'
+gem 'fpm-cookery', :git => 'https://github.com/andytinycat/fpm-cookery', :branch => "extra-paths"

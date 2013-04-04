@@ -1,6 +1,7 @@
 GIT
-  remote: https://github.com/bernd/fpm-cookery
-  revision: 2b96f5fdd51611791c2a2c370da2198fcab1662c
+  remote: https://github.com/andytinycat/fpm-cookery
+  revision: 675f985cbd4880680974c249bc4f227f8c89cd14
+  branch: extra-paths
   specs:
     fpm-cookery (0.13.0)
       facter

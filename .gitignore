@@ -1,2 +1,5 @@
 ldd.out
 pkg/
+cache/
+tmp-build/
+tmp-dest/
