@@ -15,13 +15,17 @@ and managing the Ruby versions on the machine. Keeping Puppet separate from Rubi
 run applications means this is possible (and it also means you can't break your config management
 agent by mucking around with Ruby).
 
-What is Omnibus?
-----------------
+What are Omnibus packages?
+--------------------------
 
 [Omnibus](https://github.com/opscode/omnibus-ruby) is an OS packaging system built in Ruby, written
 by the Opscode folks. It was created to build monolithic packages for Chef (which requires Ruby
 as well). Rather than re-inventing the packaging wheel, it makes use of Jordan Sissel's [fpm](https://github.com/jordansissel/fpm)
 to build the final package.
+
+The first version of this project used Opscode's tool, but they don't seem to take pull requests,
+so I enhanced bernd's superb [fpm-cookery](https://github.com/bernd/fpm-cookery) to create Omnibus
+packages, and switched this project to use it.
 
 Runtime OS package dependencies
 -------------------------------
@@ -32,61 +36,54 @@ wasteful if you only have a few OS dependencies - instead, the final package thi
 builds depends on the OS packages, so apt will automatically pull them in when you install
 the package.
 
+Included gems
+-------------
+
+The following gems are built into the Ruby that Puppet will run from:
+- facter
+- puppet
+- hiera
+- json-pure
+- puppet
+- ruby-augeas
+- ruby-shadow
+- aws-sdk
+- fog
+
+I build in aws-sdk and fog because some of my custom Puppet types make use of AWS APIs. Note that
+if you need any gems for your custom types, you will have to build them into the Omnibus package
+(or use the `gem` command at `/opt/puppet-omnibus/embedded/bin/gem` to install another gem
+into the omnibus Ruby - but that's not very CM-friendly!)
+
 How do I build the package?
 ---------------------------
 
-First you need to clone the repo and do a `bundle install` to get Omnibus.
+First you need to clone the repo and do a `bundle install` to get fpm-cookery.
 
     $ git clone https://github.com/andytinycat/puppet-omnibus
     $ bundle install
 
-Omnibus makes use of Rake to provide build tasks. To see all the available build tasks:
+Now use fpm-cookery to build the package:
 
-    $ bundle exec rake -T
-    rake clean                                         # Remove any temporary products.
-    rake clobber                                       # Remove any generated file.
-    rake projects:puppet-omnibus                       # package puppet-omnibus
-    rake projects:puppet-omnibus:deb                   # package puppet-omnibus into a deb
-    rake projects:puppet-omnibus:health_check          # run the health check on the puppet-omnibus install path
-    rake projects:puppet-omnibus:software:facter       # fetch and build facter for puppet-omnibus
-    rake projects:puppet-omnibus:software:hiera        # fetch and build hiera for puppet-omnibus
-    rake projects:puppet-omnibus:software:json_pure    # fetch and build json_pure for puppet-omnibus
-    rake projects:puppet-omnibus:software:preparation  # fetch and build preparation for puppet-omnibus
-    rake projects:puppet-omnibus:software:puppet       # fetch and build puppet for puppet-omnibus
-    rake projects:puppet-omnibus:software:ruby         # fetch and build ruby for puppet-omnibus
-    rake projects:puppet-omnibus:software:ruby-augeas  # fetch and build ruby-augeas for puppet-omnibus
-    rake projects:puppet-omnibus:software:ruby-shadow  # fetch and build ruby-shadow for puppet-omnibus
-    rake versions                                      # Print the name and version of all components
+    $ bundle exec fpm-cook recipes/puppet-omnibus.rb
 
-To build the OS package, simply run the top-level task:
+The final package will be at:
 
-    $ bundle exec rake projects:puppet-omnibus
+    recipes/puppet-omnibus/pkg
 
-At the end of the build, the package will be in pkg/ directory inside the project.
+You might want to update the maintainer, revision and vendor in puppet-omnibus.rb.
 
 Testing
 -------
 
-This can be considered extremely alpha, as it's only been tested on Ubuntu 12.04. However, it should
-work on any distribution, except the package dependency names will need to be changed.
+This can be considered beta, as it's only been tested on Ubuntu 12.04. However, it should
+work on any distribution, except the package dependency names will need to be changed. It's
+been in production for a few months at my current gig without any reported problems.
 
-Forked version of omnibus-ruby
-------------------------------
+Credits
+-------
 
-The Gemfile uses my fork of omnibus-ruby. The Opscode repo one doesn't let you set these parameters on the final package:
-- maintainer
-- URL
-- Conflicts:
-- description
-
-Also it doesn't provide a way to supply extra paths to FPM to package; we need this so we can package the init script for
-Puppet inside the package.
-
-The fork adds these features (and there's a pull request outstanding against opscode/omnibus-ruby).
-
-Todo
-----
-
-- make use of Facter to figure out the distribution and platform, and rewrite the -dev and runtime
-  dependencies appropriately
-- figure out how to make `rake versions` work (right now it seems to be broken inside Omnibus)
+Credit for the Omnibus idea goes to the [Opscode](www.opscode.com) and [Sensu](http://sensuapp.org/)
+folks. Credit for coming up with the idea of packaging Puppet like Chef belongs to my colleague
+[lloydpick](https://github.com/lloydpick). Thanks to [bernd](https://github.com/bernd) for the
+awesome [fpm-cookery](https://github.com/bernd/fpm-cookery) and for taking my PRs.
