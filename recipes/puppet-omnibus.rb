@@ -6,8 +6,8 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   version "3.1.0"
   description "Puppet Omnibus package"
   revision 5
-  vendor "f3d"
-  maintainer "Forward3D Development <agency-devs@forward.co.uk>"
+  vendor "fpm"
+  maintainer "<github@tinycat.co.uk>"
   license "Apache 2.0 License"
 
   omnibus_package true
