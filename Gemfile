@@ -1,2 +1,2 @@
 source "https://rubygems.org"
-gem 'omnibus', :git => 'https://github.com/andytinycat/omnibus-ruby', :branch => "addextrafiles"
+gem 'fpm-cookery', :git => 'https://github.com/bernd/fpm-cookery'
