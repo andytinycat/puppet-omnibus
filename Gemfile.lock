@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/andytinycat/fpm-cookery
-  revision: 675f985cbd4880680974c249bc4f227f8c89cd14
-  branch: extra-paths
+  revision: 2c9d9ab17010d35a9ce2a29d92e0309aa2204a2e
+  branch: omnibus-aware-paths
   specs:
     fpm-cookery (0.13.0)
       facter
@@ -17,7 +17,7 @@ GEM
     cabin (0.6.0)
     clamp (0.3.1)
     facter (1.6.18)
-    fpm (0.4.31)
+    fpm (0.4.33)
       arr-pm (~> 0.0.8)
       backports (= 2.6.2)
       cabin (>= 0.6.0)

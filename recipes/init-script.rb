@@ -5,7 +5,6 @@ class InitScript < FPM::Cookery::Recipe
   version '1.0.0'
   source "nothing", :with => :noop
 
-  extra_paths "/etc/init.d/puppet"
 
   def build
     # Do nothing
@@ -13,8 +12,6 @@ class InitScript < FPM::Cookery::Recipe
 
   def install
     # Copy init-script to right place
-    safesystem "cp ../../init-script/puppet /etc/init.d/puppet"
-    safesystem "chown root:root /etc/init.d/puppet"
-    safesystem "chmod 0755 /etc/init.d/puppet"
+    etc('init.d').install workdir("puppet.init.d") => 'puppet'
   end
 end
