@@ -5,7 +5,6 @@ class InitScript < FPM::Cookery::Recipe
   version '1.0.0'
   source "nothing", :with => :noop
 
-
   def build
     # Do nothing
   end

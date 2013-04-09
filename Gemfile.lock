@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/andytinycat/fpm-cookery
-  revision: 2c9d9ab17010d35a9ce2a29d92e0309aa2204a2e
+  revision: edf96146a4b56e29a9dc0a96c79579ecdb21fb79
   branch: omnibus-aware-paths
   specs:
     fpm-cookery (0.13.0)
