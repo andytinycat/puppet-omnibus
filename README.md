@@ -6,12 +6,6 @@ a source-built Ruby in /opt/puppet-omnibus, then installs all the gems required 
 to work into this Ruby. This means it leaves the system-supplied Ruby completely untouched,
 along with any other Rubies you might happen to have installed.
 
-Warning!
-========
-
-Right now, this package isn't completely sorted, as it's in the process of moving from
-Opscode's Omnibus project to fpm-cookery. Check back in a few days.
-
 Why create a monolithic Puppet package?
 ---------------------------------------
 
