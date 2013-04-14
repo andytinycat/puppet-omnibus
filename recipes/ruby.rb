@@ -15,10 +15,11 @@ class Ruby193 < FPM::Cookery::Recipe
   section 'interpreters'
 
   build_depends 'autoconf', 'libreadline6-dev', 'bison', 'zlib1g-dev',
-                'libssl-dev', 'libyaml-dev', 'libncurses5-dev', 'build-essential'
+                'libssl-dev', 'libyaml-dev', 'libncurses5-dev', 'build-essential',
+                'libffi-dev', 'libgdbm-dev'
 
   depends 'libffi6', 'libncurses5', 'libreadline6', 'libssl1.0.0', 'libtinfo5',
-          'libyaml-0-2', 'zlib1g'
+          'libyaml-0-2', 'zlib1g', 'libgdbm3'
 
   def build
     configure :prefix => "/opt/puppet-omnibus/embedded", 'disable-install-doc' => true
