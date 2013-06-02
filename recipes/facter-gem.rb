@@ -2,7 +2,7 @@ class FacterGem < FPM::Cookery::Recipe
   description 'Facter as a gem'
 
   name 'facter'
-  version '1.6.18'
+  version '1.7.1'
   source "nothing", :with => :noop
 
   def build

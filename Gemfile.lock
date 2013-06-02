@@ -1,7 +1,7 @@
 GIT
-  remote: https://github.com/andytinycat/fpm-cookery
-  revision: edf96146a4b56e29a9dc0a96c79579ecdb21fb79
-  branch: omnibus-aware-paths
+  remote: https://github.com/bernd/fpm-cookery.git
+  revision: 74718c4299d76ea34f3b7a4f7deb25a0000dd304
+  branch: master
   specs:
     fpm-cookery (0.13.0)
       facter
@@ -11,27 +11,39 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
+    addressable (2.3.4)
     arr-pm (0.0.8)
       cabin (> 0)
-    backports (2.6.2)
+    backports (3.3.1)
     cabin (0.6.0)
-    clamp (0.3.1)
-    facter (1.6.18)
-    fpm (0.4.33)
+    childprocess (0.3.9)
+      ffi (~> 1.0, >= 1.0.11)
+    clamp (0.6.0)
+    facter (1.7.1)
+    ffi (1.8.1)
+    fpm (0.4.36)
       arr-pm (~> 0.0.8)
-      backports (= 2.6.2)
+      backports (>= 2.6.2)
       cabin (>= 0.6.0)
-      clamp (= 0.3.1)
+      childprocess
+      clamp (= 0.6.0)
+      ftw (~> 0.0.30)
       json (~> 1.7.7)
-      open4
-    hiera (1.2.0)
+    ftw (0.0.34)
+      addressable
+      backports (>= 2.6.2)
+      cabin (> 0)
+      http_parser.rb (= 0.5.3)
+    hiera (1.2.1)
       json_pure
+    http_parser.rb (0.5.3)
     json (1.7.7)
-    json_pure (1.7.7)
-    open4 (1.3.0)
-    puppet (3.1.1)
+    json_pure (1.8.0)
+    puppet (3.2.1)
       facter (~> 1.6)
       hiera (~> 1.0)
+      rgen (~> 0.6)
+    rgen (0.6.2)
 
 PLATFORMS
   ruby

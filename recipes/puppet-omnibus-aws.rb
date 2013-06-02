@@ -2,7 +2,7 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   homepage "https://github.com/andytinycat/puppet-omnibus"
 
   section "Utilities"
-  name "puppet-omnibus"
+  name "puppet-omnibus-aws"
   version "3.2.1"
   description "Puppet Omnibus package"
   revision 1
@@ -14,7 +14,7 @@ class PuppetOmnibus < FPM::Cookery::Recipe
 
   omnibus_package true
   omnibus_recipes "ruby", "facter-gem", "json_pure-gem", "hiera-gem", "ruby-augeas-gem", \
-                  "ruby-shadow-gem", "puppet-gem", "init-script"
+                  "ruby-shadow-gem", "fog-gem", "aws-sdk-gem", "puppet-gem", "init-script"
   omnibus_dir     "/opt/puppet-omnibus"
   omnibus_additional_paths "/etc/init.d/puppet"
 
