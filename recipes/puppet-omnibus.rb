@@ -13,8 +13,9 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   source '', :with => :noop
 
   omnibus_package true
-  omnibus_recipes "ruby", "facter-gem", "json_pure-gem", "hiera-gem", "ruby-augeas-gem", \
-                  "ruby-shadow-gem", "fog-gem", "aws-sdk-gem", "puppet-gem", "init-script"
+  omnibus_recipes "libyaml", "ruby", "facter-gem", "json_pure-gem", "hiera-gem",
+                  "ruby-augeas-gem", "ruby-shadow-gem", "fog-gem", "aws-sdk-gem",
+                  "puppet-gem", "init-script"
   omnibus_dir     "/opt/puppet-omnibus"
   omnibus_additional_paths "/etc/init.d/puppet"
 
