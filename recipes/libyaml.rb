@@ -14,7 +14,13 @@ class Ruby193 < FPM::Cookery::Recipe
 
   section 'libraries'
 
-  build_depends 'build-essential'
+  platforms [:ubuntu, :debian] do
+	build_depends 'build-essential'
+  end
+
+  platforms [:fedora, :redhat, :centos] do
+	build_depends 'gcc', 'gcc-c++', 'make'
+  end
 
   def build
     configure :prefix => "/opt/puppet-omnibus/embedded"
