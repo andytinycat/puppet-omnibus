@@ -3,9 +3,9 @@ class PuppetOmnibus < FPM::Cookery::Recipe
 
   section "Utilities"
   name "puppet-omnibus"
-  version "3.1.0"
+  version "3.2.1"
   description "Puppet Omnibus package"
-  revision 5
+  revision 1
   vendor "fpm"
   maintainer "<github@tinycat.co.uk>"
   license "Apache 2.0 License"
