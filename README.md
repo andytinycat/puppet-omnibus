@@ -33,8 +33,10 @@ Runtime OS package dependencies
 Obviously some components of Ruby/Puppet/Facter have library dependencies. Opscode take the approach of
 building *any* binary component from source and having it inside the package. I think this is
 wasteful if you only have a few OS dependencies - instead, the final package this project
-builds depends on the OS packages, so apt will automatically pull them in when you install
+builds depends on the OS packages, so apt/yum will automatically pull them in when you install
 the package.
+
+The exception is libyaml, which now gets built into the Omnibus; this is to help support RHEL/Centos etc without needing EPEL.
 
 Included gems
 -------------
@@ -76,9 +78,7 @@ You might want to update the maintainer, revision and vendor in puppet-omnibus.r
 Testing
 -------
 
-This can be considered beta, as it's only been tested on Ubuntu 12.04. However, it should
-work on any distribution, except the package dependency names will need to be changed. It's
-been in production for a few months at my current gig without any reported problems.
+This is tested fairly extensively in production with Ubuntu 12.04 LTS ("precise"). [beddari](https://github.com/beddari) reports it working on RHEL derivatives (Centos, Fedora, et. al.)
 
 Credits
 -------
@@ -86,4 +86,4 @@ Credits
 Credit for the Omnibus idea goes to the [Opscode](www.opscode.com) and [Sensu](http://sensuapp.org/)
 folks. Credit for coming up with the idea of packaging Puppet like Chef belongs to my colleague
 [lloydpick](https://github.com/lloydpick). Thanks to [bernd](https://github.com/bernd) for the
-awesome [fpm-cookery](https://github.com/bernd/fpm-cookery) and for taking my PRs.
+awesome [fpm-cookery](https://github.com/bernd/fpm-cookery) and for taking my PRs. Thanks to [beddari](https://github.com/beddari) for his PRs to support RHEL derivatives.
