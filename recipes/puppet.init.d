@@ -8,7 +8,7 @@
 # Default-Stop:      0 1 6
 ### END INIT INFO                                                                                                                                          
 
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/puppet-omnibus/bin
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/opt/puppet-omnibus/bin:/opt/puppet-omnibus/embedded/bin
 DAEMON=/opt/puppet-omnibus/bin/puppet
 DAEMON_OPTS=""
 NAME="agent"
