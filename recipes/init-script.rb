@@ -11,6 +11,13 @@ class InitScript < FPM::Cookery::Recipe
 
   def install
     # Copy init-script to right place
-    etc('init.d').install workdir("puppet.init.d") => 'puppet'
+    case FPM::Cookery::Facts.target
+    when :deb
+      etc('init.d').install workdir("puppet.init.d-deb") => 'puppet'
+    when :rpm
+      etc('init.d').install workdir("puppet.init.d-rpm") => 'puppet'
+      etc('sysconfig').install workdir("sysconfig-puppet-rpm") => 'puppet'
+    end
+    
   end
 end

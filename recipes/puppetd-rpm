@@ -1,0 +1,4 @@
+#!/opt/puppet-omnibus/embedded/bin/ruby
+
+require 'puppet/application/agent'
+Puppet::Application[:agent].run

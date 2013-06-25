@@ -3,7 +3,7 @@ class PuppetOmnibus < FPM::Cookery::Recipe
 
   section "Utilities"
   name "puppet-omnibus"
-  version "3.2.1"
+  version "3.2.2"
   description "Puppet Omnibus package"
   revision 1
   vendor "fpm"
@@ -15,9 +15,14 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   omnibus_package true
   omnibus_recipes "libyaml", "ruby", "facter-gem", "json_pure-gem", "hiera-gem",
                   "ruby-augeas-gem", "ruby-shadow-gem", "fog-gem", "aws-sdk-gem",
-                  "puppet-gem", "symlinks", "init-script"
+                  "puppet-gem", "symlinks", "init-script", "puppetd"
   omnibus_dir     "/opt/puppet-omnibus"
-  omnibus_additional_paths "/etc/init.d/puppet"
+  case FPM::Cookery::Facts.target
+  when :deb
+    omnibus_additional_paths "/etc/init.d/puppet"
+  when :rpm
+    omnibus_additional_paths "/etc/init.d/puppet", "/etc/sysconfig/puppet"
+  end
 
   def build
     # Nothing

@@ -13,10 +13,15 @@ class Ruby193 < FPM::Cookery::Recipe
   license    'MIT license'
 
   section 'libraries'
-
-  build_depends 'build-essential'
+    case FPM::Cookery::Facts.target
+    when :deb
+      build_depends 'build-essential'
+    when :rpm
+      build_depends 'gcc', 'gcc-c++', 'glibc', 'make'
+    end
 
   def build
+
     configure :prefix => "/opt/puppet-omnibus/embedded"
     make
   end
