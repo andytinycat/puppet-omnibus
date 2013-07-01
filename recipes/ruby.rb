@@ -23,7 +23,7 @@ class Ruby193 < FPM::Cookery::Recipe
 
   def build
     configure :prefix => "/opt/puppet-omnibus/embedded", 'disable-install-doc' => true,
-              'with-opt-dir' => '/opt/puppet-omnibus/embedded"
+              'with-opt-dir' => "/opt/puppet-omnibus/embedded"
     make
   end
 
