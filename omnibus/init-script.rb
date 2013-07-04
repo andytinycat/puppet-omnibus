@@ -11,12 +11,12 @@ class InitScript < FPM::Cookery::Recipe
 
   def install
     # Copy init-scripts to right place
-    platforms [:ubuntu, :debian] do
-      etc('init.d').install workdir("puppet.init.d") => 'puppet'
-    end
-    platforms [:fedora, :redhat, :centos]
-      etc('init.d').install workdir("files/redhat/etc/init.d/puppet") => 'puppet'
-      etc('sysconfig').install workdir("files/redhat/etc/sysconfig/puppet") => 'puppet'
-    end
+#    platforms [:ubuntu, :debian] do
+#      etc('init.d').install workdir("puppet.init.d") => 'puppet'
+#    end
+#    platforms [:fedora, :redhat, :centos] do
+      etc('init.d').install workdir("../files/redhat/etc/init.d/puppet") => 'puppet'
+      etc('sysconfig').install workdir("../files/redhat/etc/sysconfig/puppet") => 'puppet'
+#    end
   end
 end
