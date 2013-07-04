@@ -10,13 +10,13 @@ Vagrant.configure("2") do |config|
     v.customize ["modifyvm", :id, "--cpus", "2"]
   end
 
-  config.vm.define :centos do |node1|
+  config.vm.define :centos6 do |node1|
     node1.vm.hostname = "centos6"
     node1.vm.box      = "centos6"
     node1.vm.box_url  = "http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210-nocm.box"
   end
 
-  config.vm.define :fedora do |node2|
+  config.vm.define :fedora18 do |node2|
     node2.vm.hostname = "fedora18"
     node2.vm.box      = "fedora18"
     node2.vm.box_url  = "http://puppet-vagrant-boxes.puppetlabs.com/fedora-18-x64-vbox4210-nocm.box"
