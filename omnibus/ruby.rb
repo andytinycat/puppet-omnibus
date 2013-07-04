@@ -15,26 +15,53 @@ class Ruby193 < FPM::Cookery::Recipe
   section 'interpreters'
 
   platforms [:ubuntu, :debian] do
-    build_depends 'autoconf', 'libreadline6-dev', 'bison', 'zlib1g-dev',
-                  'libssl-dev', 'libncurses5-dev', 'build-essential',
-                  'libffi-dev', 'libgdbm-dev'
-    depends 'libffi6', 'libncurses5', 'libreadline6', 'libssl1.0.0', 'libtinfo5',
-            'zlib1g', 'libgdbm3'
+    build_depends 'autoconf',
+                  'libreadline6-dev',
+                  'bison',
+                  'zlib1g-dev',
+                  'libssl-dev',
+                  'libncurses5-dev',
+                  'build-essential',
+                  'libffi-dev',
+                  'libgdbm-dev'
+    depends 'libffi6',
+            'libncurses5',
+            'libreadline6',
+            'libssl1.0.0',
+            'libtinfo5',
+            'zlib1g',
+            'libgdbm3'
   end
 
   platforms [:fedora, :redhat, :centos] do
-    build_depends 'rpmdevtools', 'libffi-devel', 'autoconf', 'bison',
-                  'libxml2-devel', 'libxslt-devel', 'openssl-devel', 'gdbm-devel'
-    depends 'zlib', 'openssl', 'libffi', 'gdbm'
+    build_depends 'rpmdevtools',
+                  'libffi-devel',
+                  'autoconf',
+                  'bison',
+                  'libxml2-devel',
+                  'libxslt-devel',
+                  'openssl-devel',
+                  'gdbm-devel'
+    depends 'zlib',
+            'openssl',
+            'libffi',
+            'gdbm'
   end
 
   def build
-    configure :prefix => "/opt/puppet-omnibus/embedded", 'disable-install-doc' => true,
-              'with-opt-dir' => "/opt/puppet-omnibus/embedded"
+    configure :prefix => $destdir,
+              'enable-shared' => true,
+              'disable-install-doc' => true,
+              'with-opt-dir' => "#{destdir}/embedded"
     make
   end
 
   def install
     make :install
+    # Shrink package.
+    rm_f "#{destdir}/lib/libruby-static.a"
+    safesystem "strip #{destdir}/bin/ruby"
+    safesystem "find #{destdir} -name '*.so' -or -name '*.so.*' | xargs strip"
   end
 end
+
