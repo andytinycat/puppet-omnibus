@@ -49,7 +49,7 @@ class Ruby193 < FPM::Cookery::Recipe
   end
 
   def build
-    configure :prefix => $destdir,
+    configure :prefix => destdir,
               'enable-shared' => true,
               'disable-install-doc' => true,
               'with-opt-dir' => "#{destdir}/embedded"
