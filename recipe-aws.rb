@@ -18,6 +18,7 @@ class PuppetOmnibus < FPM::Cookery::Recipe
                   "omnibus/facter-gem",
                   "omnibus/json_pure-gem",
                   "omnibus/hiera-gem",
+                  "omnibus/rgen-gem",
                   "omnibus/ruby-augeas-gem",
                   "omnibus/ruby-shadow-gem",
                   "omnibus/puppet-gem",
