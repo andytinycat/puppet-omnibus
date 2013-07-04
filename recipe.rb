@@ -22,7 +22,6 @@ class PuppetOmnibus < FPM::Cookery::Recipe
                   "omnibus/ruby-augeas-gem",
                   "omnibus/ruby-shadow-gem",
                   "omnibus/puppet-gem",
-                  "omnibus/symlinks",
                   "omnibus/init-script"
 
   omnibus_dir              "/opt/puppet-omnibus"
