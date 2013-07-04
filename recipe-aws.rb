@@ -22,7 +22,9 @@ class PuppetOmnibus < FPM::Cookery::Recipe
                   "omnibus/ruby-shadow-gem",
                   "omnibus/puppet-gem",
                   "omnibus/symlinks",
-                  "omnibus/init-script"
+                  "omnibus/init-script",
+                  "aws/fog-gem",
+                  "aws/aws-sdk-gem"
 
   omnibus_dir              "/opt/puppet-omnibus"
   omnibus_additional_paths "/etc/init.d/puppet"
