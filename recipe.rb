@@ -45,11 +45,6 @@ class PuppetOmnibus < FPM::Cookery::Recipe
 
   private
 
-  def gem_install(name, version = nil)
-    v = version.nil? ? '' : "-v #{version}"
-    cleanenv_safesystem "#{destdir}/embedded/bin/gem install --no-ri --no-rdoc #{v} #{name}"
-  end
-
   def create_post_install_hook
     File.open(builddir('post-install'), 'w', 0755) do |f|
       f.write <<-__POSTINST
