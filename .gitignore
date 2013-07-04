@@ -1,3 +1,4 @@
+.vagrant
 ldd.out
 pkg/
 cache/
