@@ -2,7 +2,7 @@ class HieraGem < FPM::Cookery::Recipe
   description 'Hiera as a gem'
 
   name 'hiera'
-  version '1.1.2'
+  version '1.2.1'
   source "nothing", :with => :noop
 
   def build
