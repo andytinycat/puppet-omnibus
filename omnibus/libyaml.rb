@@ -23,7 +23,7 @@ class Ruby193 < FPM::Cookery::Recipe
   end
 
   def build
-    configure :prefix => "/opt/puppet-omnibus/embedded"
+    configure :prefix => destdir
     make
   end
 
