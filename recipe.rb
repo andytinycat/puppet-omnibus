@@ -5,7 +5,7 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   name 'puppet-omnibus'
   version '3.2.2'
   description 'Puppet Omnibus package'
-  revision 2
+  revision 0
   vendor 'fpm'
   maintainer '<github@tinycat.co.uk>'
   license 'Apache 2.0 License'
@@ -29,13 +29,6 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   end
 
   def install
-    rm_rf "#{destdir}/bin"
-    # Provide 'safe' binaries like Vagrant does
-    destdir('bin').mkdir
-    destdir('bin').install workdir('files/omnibus.bin'), 'puppet'
-    destdir('bin').install workdir('files/omnibus.bin'), 'facter'
-    destdir('bin').install workdir('files/omnibus.bin'), 'hiera'
-
     # Symlink binaries to PATH using update-alternatives
     with_trueprefix do
       create_post_install_hook

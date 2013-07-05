@@ -27,7 +27,12 @@ class PuppetGem < FPM::Cookery::Recipe
   end
 
   def install
-    # Do nothing!
+    # Provide 'safe' binaries like Vagrant does
+    rm_rf "#{destdir}/bin"
+    destdir('bin').mkdir
+    destdir('bin').install workdir('files/omnibus.bin'), 'puppet'
+    destdir('bin').install workdir('files/omnibus.bin'), 'facter'
+    destdir('bin').install workdir('files/omnibus.bin'), 'hiera'
   end
 
   private
