@@ -43,10 +43,11 @@ class Ruby193 < FPM::Cookery::Recipe
                   'openssl-devel',
                   'gdbm-devel'
     depends 'zlib',
-            'openssl',
             'libffi',
             'gdbm'
   end
+  platforms [:fedora] do depends.push('openssl-libs') end
+  platforms [:redhat, :centos] do depends.push('openssl') end
 
   def build
     configure :prefix => destdir,
