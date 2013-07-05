@@ -5,19 +5,21 @@ class InitScripts < FPM::Cookery::Recipe
   version '1.0.0'
   source "nothing", :with => :noop
 
-  platforms [:ubuntu, :debian] do
-    #etc('init.d').install workdir("puppet.init.d") => 'puppet'
-  end
-  platforms [:fedora, :redhat, :centos] do
-    #etc('init.d').install workdir("files/redhat/etc/init.d/puppet") => 'puppet'
-    #etc('sysconfig').install workdir("files/redhat/etc/sysconfig/puppet") => 'puppet'
-  end
-
   def build
-    # Do nothing
+    # install
   end
 
-  def install
-    # Do nothing 
+  platforms [:ubuntu, :debian] do
+    def install
+      etc('init.d').install workdir("files/ubuntu/etc/init.d/puppet") => 'puppet'
+    end
   end
+
+  platforms [:fedora, :redhat, :centos] do
+    def install
+      etc('init.d').install workdir("files/redhat/etc/init.d/puppet") => 'puppet'
+      etc('sysconfig').install workdir("files/redhat/etc/sysconfig/puppet") => 'puppet'
+    end
+  end
+
 end
