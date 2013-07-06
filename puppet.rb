@@ -17,6 +17,7 @@ class PuppetGem < FPM::Cookery::Recipe
   end
 
   def build
+    # Install gems using the gem command from destdir
     gem_install 'facter',      '1.7.1'
     gem_install 'json_pure',   '1.6.3'
     gem_install 'hiera',       '1.2.1'
@@ -24,15 +25,27 @@ class PuppetGem < FPM::Cookery::Recipe
     gem_install 'ruby-augeas', '0.4.1'
     gem_install 'ruby-shadow', '2.2.0'
     gem_install name,          version
+
+    # Download init scripts and conf
+    build_files
   end
 
   def install
-    # Provide 'safe' binaries like Vagrant does
-    rm_rf "#{destdir}/bin"
-    destdir('bin').mkdir
-    destdir('bin').install workdir('files/omnibus.bin'), 'puppet'
-    destdir('bin').install workdir('files/omnibus.bin'), 'facter'
-    destdir('bin').install workdir('files/omnibus.bin'), 'hiera'
+    # Install init-script and puppet.conf
+    install_files
+
+    # Provide 'safe' binaries in /opt/<package>/bin like Vagrant does
+    rm_rf "#{destdir}/../bin"
+    destdir('../bin').mkdir
+    destdir('../bin').install workdir('omnibus.bin'), 'puppet'
+    destdir('../bin').install workdir('omnibus.bin'), 'facter'
+    destdir('../bin').install workdir('omnibus.bin'), 'hiera'
+
+    # Symlink binaries to PATH using update-alternatives
+    with_trueprefix do
+      create_post_install_hook
+      create_pre_uninstall_hook
+    end
   end
 
   private
@@ -40,6 +53,80 @@ class PuppetGem < FPM::Cookery::Recipe
   def gem_install(name, version = nil)
     v = version.nil? ? '' : "-v #{version}"
     cleanenv_safesystem "#{destdir}/bin/gem install --no-ri --no-rdoc #{v} #{name}"
+  end
+
+  platforms [:ubuntu, :debian] do
+    def build_files
+      system 'curl -O https://raw.github.com/puppetlabs/puppet/stable/ext/debian/puppet.conf'
+      system 'curl -O https://raw.github.com/puppetlabs/puppet/stable/ext/debian/puppet.init'
+      system 'curl -O https://raw.github.com/puppetlabs/puppet/stable/ext/debian/puppet.default'
+      system "echo DAEMON=#{destdir}/bin/puppet >> puppet.default"
+    end
+    def install_files
+      etc('puppet').mkdir
+      etc('puppet').install builddir('puppet.conf') => 'puppet.conf'
+      etc('init.d').install builddir('puppet.init') => 'puppet'
+      etc('default').install builddir('puppet.default') => 'puppet'
+      chmod 0755, etc('init.d/puppet')
+    end
+  end
+
+  platforms [:fedora, :redhat, :centos] do
+    def build_files
+      system 'curl -O https://raw.github.com/puppetlabs/puppet/stable/ext/redhat/puppet.conf'
+      system 'curl -O https://raw.github.com/puppetlabs/puppet/stable/ext/redhat/client.init'
+      system 'curl -O https://raw.github.com/puppetlabs/puppet/stable/ext/redhat/client.sysconfig'
+      system "echo PUPPETD=#{destdir}/bin/puppet >> client.sysconfig"
+    end
+    def install_files
+      etc('puppet').mkdir
+      etc('puppet').install builddir('puppet.conf') => 'puppet.conf'
+      etc('init.d').install builddir('client.init') => 'puppet'
+      etc('sysconfig').install builddir('client.sysconfig') => 'puppet'
+      chmod 0755, etc('init.d/puppet')
+    end
+  end
+
+  def create_post_install_hook
+    File.open(builddir('post-install'), 'w', 0755) do |f|
+      f.write <<-__POSTINST
+#!/bin/sh
+set -e
+
+BIN_PATH="#{destdir}/bin"
+BINS="puppet facter hiera"
+
+for BIN in $BINS; do
+  update-alternatives --install /usr/bin/$BIN $BIN $BIN_PATH/$BIN 100
+done
+
+exit 0
+      __POSTINST
+
+      self.class.post_install(File.expand_path(f.path))
+    end
+  end
+
+  def create_pre_uninstall_hook
+    File.open(builddir('pre-uninstall'), 'w', 0755) do |f|
+      f.write <<-__PRERM
+#!/bin/sh
+set -e
+
+BIN_PATH="#{destdir}/bin"
+BINS="puppet facter hiera"
+
+if [ "$1" != "upgrade" ]; then
+  for BIN in $BINS; do
+    update-alternatives --remove $BIN $BIN_PATH/$BIN
+  done
+fi
+
+exit 0
+      __PRERM
+
+      self.class.pre_uninstall(File.expand_path(f.path))
+    end
   end
 
 end
