@@ -104,8 +104,6 @@ done
 
 exit 0
       __POSTINST
-
-      self.class.post_install(File.expand_path(f.path))
     end
   end
 
@@ -126,8 +124,6 @@ fi
 
 exit 0
       __PRERM
-
-      self.class.pre_uninstall(File.expand_path(f.path))
     end
   end
 
