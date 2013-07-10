@@ -25,6 +25,7 @@ class PuppetGem < FPM::Cookery::Recipe
     gem_install 'rgen',        '0.6.5'
     gem_install 'ruby-augeas', '0.4.1'
     gem_install 'ruby-shadow', '2.2.0'
+    gem_install 'gpgme',       '2.0.2'
     gem_install name,          version
 
     # Download init scripts and conf
