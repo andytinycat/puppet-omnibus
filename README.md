@@ -23,7 +23,7 @@ by the Opscode folks. It was created to build monolithic packages for Chef (whic
 as well). Rather than re-inventing the packaging wheel, it makes use of Jordan Sissel's [fpm](https://github.com/jordansissel/fpm)
 to build the final package.
 
-The first version of this project used Opscode's tool, but they don't seem to take pull requests,
+The first version of this project used Opscode's tool, but they didn't seem to take pull requests,
 so I enhanced bernd's superb [fpm-cookery](https://github.com/bernd/fpm-cookery) to create Omnibus
 packages, and switched this project to use it.
 
@@ -38,27 +38,40 @@ the package.
 
 The exception is libyaml, which now gets built into the Omnibus; this is to help support RHEL/Centos etc without needing EPEL.
 
-Included gems
--------------
+Available builds
+----------------
 
-The following gems are built into the Ruby that Puppet will run from:
+There are two recipes available - `recipe-aws.rb`, which includes some gems to support Puppet
+types that make use of AWS resources, and `recipe.rb`, for people not using AWS.
+
+The following gems are built into both recipes:
 - facter
-- puppet
+- json_pure
 - hiera
-- json-pure
-- puppet
+- deep_merge
+- rgen
 - ruby-augeas
 - ruby-shadow
+- gpgme
+- puppet
+
+The following extra gems are included in the `recipe-aws.rb` build:
 - aws-sdk
 - fog
 
-I build in aws-sdk and fog because some of my custom Puppet types make use of AWS APIs. Note that
-if you need any gems for your custom types, you will have to build them into the Omnibus package
-(or use the `gem` command at `/opt/puppet-omnibus/embedded/bin/gem` to install another gem
-into the omnibus Ruby - but that's not very CM-friendly!)
+Package contents
+----------------
+
+Besides Ruby and associated gems, the package also places scripts to run the puppet, facter and
+hiera binaries in /usr/bin using update-alternatives. It deploys an appropriate init script 
+based on the official Puppetlabs script, config files, and files in `/etc/default` / `/etc/sysconfig`.
 
 How do I build the package?
 ---------------------------
+
+fpm-cookery will build a package for the platform you run it on - so if you want one for e.g.
+CentOS, then run the build on CentOS. We'd like to integrate automatic Vagrant builds;
+pull requests welcomed!
 
 First you need to clone the repo and do a `bundle install` to get fpm-cookery.
 
@@ -67,18 +80,25 @@ First you need to clone the repo and do a `bundle install` to get fpm-cookery.
 
 Now use fpm-cookery to build the package:
 
-    $ bundle exec fpm-cook recipes/puppet-omnibus.rb
+    $ bundle exec fpm-cook recipe.rb
+
+or:
+
+    $ bundle exec fpm-cook recipe-aws.rb
+
+depending on whether you want the AWS or non-AWS build.
 
 The final package will be at:
 
-    recipes/puppet-omnibus/pkg
+    puppet-omnibus/pkg
 
 You might want to update the maintainer, revision and vendor in puppet-omnibus.rb.
 
 Testing
 -------
 
-This is tested fairly extensively in production with Ubuntu 12.04 LTS ("precise"). [beddari](https://github.com/beddari) reports it working on RHEL derivatives (Centos, Fedora, et. al.)
+I use this in production with Ubuntu 12.04. [beddari](https://github.com/beddari) reports it
+working on Fedora, CentOS and RHEL.
 
 Credits
 -------
@@ -86,4 +106,4 @@ Credits
 Credit for the Omnibus idea goes to the [Opscode](www.opscode.com) and [Sensu](http://sensuapp.org/)
 folks. Credit for coming up with the idea of packaging Puppet like Chef belongs to my colleague
 [lloydpick](https://github.com/lloydpick). Thanks to [bernd](https://github.com/bernd) for the
-awesome [fpm-cookery](https://github.com/bernd/fpm-cookery) and for taking my PRs. Thanks to [beddari](https://github.com/beddari) for his PRs to support RHEL derivatives.
+awesome [fpm-cookery](https://github.com/bernd/fpm-cookery) and for taking my PRs. Thanks to [beddari](https://github.com/beddari) for his PRs to support RHEL derivatives, and his almost complete overhaul of the project.
