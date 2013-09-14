@@ -73,23 +73,18 @@ fpm-cookery will build a package for the platform you run it on - so if you want
 CentOS, then run the build on CentOS. We'd like to integrate automatic Vagrant builds;
 pull requests welcomed!
 
-You'll need a working Ruby 1.9.3 environment you can install gems into, then install
-`fpm-cookery` into it. For Precise, do:
-
-    $ sudo apt-get install ruby1.9.1 ruby1.9.1-dev
-    $ sudo gem install fpm-cookery
-
-Clone this repository:
+You need to clone the repository and bundle it:
 
     $ git clone https://github.com/andytinycat/puppet-omnibus
+    $ bundle install
 
 Now use fpm-cookery to build the package:
 
-    $ sudo fpm-cook recipe.rb
+    $ sudo bundle exec fpm-cook recipe.rb
 
 or:
 
-    $ sudo fpm-cook recipe-aws.rb
+    $ sudo bundle exec fpm-cook recipe-aws.rb
 
 depending on whether you want the AWS or non-AWS build.
 
