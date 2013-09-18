@@ -1,3 +1,4 @@
+.bundle
 .vagrant
 ldd.out
 pkg/
