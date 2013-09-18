@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/bernd/fpm-cookery
-  revision: 8dfac124174675931edc7e749a416b06ce4d16f8
-  ref: 8dfac124174675931edc7e749a416b06ce4d16f8
+  revision: 60aa048a0ce3d8bb272af673ece9bdb987ee394e
+  ref: 60aa048a0ce3d8bb272af673ece9bdb987ee394e
   specs:
     fpm-cookery (0.15.0)
       addressable
@@ -16,7 +16,7 @@ GEM
     addressable (2.3.5)
     arr-pm (0.0.8)
       cabin (> 0)
-    backports (3.3.3)
+    backports (3.3.4)
     cabin (0.6.1)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
