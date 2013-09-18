@@ -1,3 +1,4 @@
+bin/
 .bundle
 .vagrant
 ldd.out
