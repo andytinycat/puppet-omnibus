@@ -76,11 +76,11 @@ class PuppetGem < FPM::Cookery::Recipe
 
   platforms [:fedora, :redhat, :centos] do
     def build_files
-      system "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/puppet.conf"
-      system "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.init"
-      system "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.sysconfig"
+      safesystem "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/puppet.conf"
+      safesystem "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.init"
+      safesystem "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.sysconfig"
       # Set the real daemon path in initscript defaults
-      system "echo PUPPETD=#{destdir}/bin/puppet >> client.sysconfig"
+      safesystem "echo PUPPETD=#{destdir}/bin/puppet >> client.sysconfig"
     end
     def install_files
       etc('puppet').mkdir
