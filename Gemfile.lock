@@ -1,22 +1,10 @@
-GIT
-  remote: https://github.com/bernd/fpm-cookery
-  revision: 60aa048a0ce3d8bb272af673ece9bdb987ee394e
-  ref: 60aa048a0ce3d8bb272af673ece9bdb987ee394e
-  specs:
-    fpm-cookery (0.15.0)
-      addressable
-      facter
-      fpm (~> 0.4)
-      puppet
-      systemu
-
 GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.3.5)
     arr-pm (0.0.8)
       cabin (> 0)
-    backports (3.3.4)
+    backports (3.3.5)
     cabin (0.6.1)
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
@@ -31,7 +19,13 @@ GEM
       clamp (~> 0.6)
       ftw (~> 0.0.30)
       json (>= 1.7.7)
-    ftw (0.0.34)
+    fpm-cookery (0.16.2)
+      addressable
+      facter
+      fpm (~> 0.4)
+      puppet
+      systemu
+    ftw (0.0.36)
       addressable
       backports (>= 2.6.2)
       cabin (> 0)
@@ -39,9 +33,9 @@ GEM
     hiera (1.2.1)
       json_pure
     http_parser.rb (0.5.3)
-    json (1.8.0)
-    json_pure (1.8.0)
-    puppet (3.3.0)
+    json (1.8.1)
+    json_pure (1.8.1)
+    puppet (3.3.1)
       facter (~> 1.6)
       hiera (~> 1.0)
       rgen (~> 0.6.5)
@@ -52,4 +46,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  fpm-cookery!
+  fpm-cookery (= 0.16.2)

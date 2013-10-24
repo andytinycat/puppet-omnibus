@@ -80,11 +80,11 @@ You need to clone the repository and bundle it:
 
 Now use fpm-cookery to build the package:
 
-    $ sudo bundle exec fpm-cook recipe.rb
+    $ sudo bundle exec fpm-cook package recipe.rb
 
 or:
 
-    $ sudo bundle exec fpm-cook recipe-aws.rb
+    $ sudo bundle exec fpm-cook package recipe-aws.rb
 
 depending on whether you want the AWS or non-AWS build.
 
