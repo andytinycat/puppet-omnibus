@@ -2,7 +2,7 @@ class PuppetGem < FPM::Cookery::Recipe
   description 'Puppet gem stack'
 
   name 'puppet'
-  version '3.3.2'
+  version '3.4.2'
 
   source "nothing", :with => :noop
 
@@ -18,15 +18,17 @@ class PuppetGem < FPM::Cookery::Recipe
 
   def build
     # Install gems using the gem command from destdir
-    gem_install 'facter',      '1.7.3'
-    gem_install 'json_pure',   '1.8.0'
-    gem_install 'hiera',       '1.3.0'
-    gem_install 'deep_merge',  '1.0.0'
-    gem_install 'rgen',        '0.6.5'
-    gem_install 'ruby-augeas', '0.4.1'
-    gem_install 'ruby-shadow', '2.2.0'
-    gem_install 'gpgme',       '2.0.2'
-    gem_install name,          version
+    gem_install 'facter',             '1.7.4'
+    gem_install 'json_pure',          '1.8.0'
+    gem_install 'hiera',              '1.3.1'
+    gem_install 'deep_merge',         '1.0.0'
+    gem_install 'rgen',               '0.6.5'
+    gem_install 'ruby-augeas',        '0.4.1'
+    gem_install 'ruby-shadow',        '2.2.0'
+    gem_install 'gpgme',              '2.0.2'
+    gem_install 'mcollective-client', '2.4.0'
+    gem_install 'zcollective',        '0.0.9'
+    gem_install name,                 version
 
     # Download init scripts and conf
     build_files
@@ -42,6 +44,8 @@ class PuppetGem < FPM::Cookery::Recipe
     destdir('../bin').install workdir('omnibus.bin'), 'puppet'
     destdir('../bin').install workdir('omnibus.bin'), 'facter'
     destdir('../bin').install workdir('omnibus.bin'), 'hiera'
+    destdir('../bin').install workdir('omnibus.bin'), 'mco'
+    destdir('../bin').install workdir('omnibus.bin'), 'zcollective'
 
     # Symlink binaries to PATH using update-alternatives
     with_trueprefix do
@@ -79,6 +83,8 @@ class PuppetGem < FPM::Cookery::Recipe
       safesystem "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/puppet.conf"
       safesystem "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.init"
       safesystem "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.sysconfig"
+      safesystem "curl -O https://raw.github.com/puppetlabs/marionette-collective/master/etc/client.cfg.dist"
+      safesystem "curl -O https://raw.github.com/puppetlabs/marionette-collective/master/etc/server.cfg.dist"
       # Set the real daemon path in initscript defaults
       safesystem "echo PUPPETD=#{destdir}/bin/puppet >> client.sysconfig"
     end
@@ -88,6 +94,9 @@ class PuppetGem < FPM::Cookery::Recipe
       etc('init.d').install builddir('client.init') => 'puppet'
       etc('sysconfig').install builddir('client.sysconfig') => 'puppet'
       chmod 0755, etc('init.d/puppet')
+      etc('mcollective').mkdir
+      etc('mcollective').install builddir('server.cfg.dist') => 'server.cfg'
+      etc('mcollective').install builddir('client.cfg.dist') => 'client.cfg'
     end
   end
 
