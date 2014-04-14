@@ -17,8 +17,6 @@ node "ubuntu12" {
 node "centos6" {
 
    include rbenv
-   rbenv::install_ruby { "1.9.3-p545": 
-       require => Package["unzip"]
-   }
+   rbenv::install_ruby { "1.9.3-p545": }
 
 }
