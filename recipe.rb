@@ -5,10 +5,22 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   name 'scalefactory'
   version '3.4.2'
   description 'Puppet Omnibus package'
-  revision 0
   vendor 'fpm'
   maintainer '<jon@scalefactory.com>'
-  license 'Apache 2.0 License'
+  license 'Various'
+
+  automation_packages = [
+    'automation-hiera', 'automation-rubygems', 'automation-rubygem-right_http_connection',
+    'automation-ruby-augeas', 'automation-hiera-gpg', 'automation-mcollective',
+    'automation-ruby', 'automation-facter', 'automation-ruby-rdoc', 'automation-rubygem-rake',
+    'automation-rubygem-flexmock', 'automation-rubygem-right_aws', 'automation-hiera-aws',
+    'automation-rubygem-json', 'automation-mcollective-common', 'automation-rubygem-SyslogLogger',
+    'automation-ruby-libs', 'automation-ruby-irb', 'automation-rubygem-gpgme',
+    'automation-ruby-shadow', 'automation-rubygem-stomp', 'automation-rubygem-sf-deploy',
+  ]
+
+  conflicts automation_packages
+  replaces automation_packages
 
   source '', :with => :noop
 
@@ -17,6 +29,14 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   omnibus_recipes 'libyaml',
                   'ruby',
                   'puppet'
+
+
+  if ENV.has_key?('BUILD_NUMBER')
+    revision ENV['BUILD_NUMBER']
+  else
+    puts "Using revision number 0, as no BUILD_NUMBER passed - this may not be correct"
+    revision 0
+  end
 
   # Set up paths to initscript and config files per platform
   platforms [:ubuntu, :debian] do
