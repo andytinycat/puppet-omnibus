@@ -21,7 +21,7 @@ class PuppetOmnibus < FPM::Cookery::Recipe
 
   conflicts automation_packages
   replaces  automation_packages
-  provides  [ automation_packages, 'automation_ruby(abi)' ].flatten
+  provides  [ automation_packages, 'automation-ruby(abi) = 2.0' ].flatten
 
   source '', :with => :noop
 
