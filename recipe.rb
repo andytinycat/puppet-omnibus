@@ -17,6 +17,7 @@ class PuppetOmnibus < FPM::Cookery::Recipe
     'automation-rubygem-json', 'automation-mcollective-common', 'automation-rubygem-SyslogLogger',
     'automation-ruby-libs', 'automation-ruby-irb', 'automation-rubygem-gpgme',
     'automation-ruby-shadow', 'automation-rubygem-stomp', 'automation-rubygem-sf-deploy',
+    'automation-puppet',
   ]
 
   conflicts automation_packages
