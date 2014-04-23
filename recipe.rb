@@ -20,7 +20,8 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   ]
 
   conflicts automation_packages
-  replaces automation_packages
+  replaces  automation_packages
+  provides  automation_packages
 
   source '', :with => :noop
 
