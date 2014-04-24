@@ -22,8 +22,15 @@ class PuppetOmnibus < FPM::Cookery::Recipe
 
   conflicts automation_packages
   replaces  automation_packages
-  provides  [ automation_packages, 'automation-ruby(abi) = 2.0', 
-      'automation-ruby(x86-64)', '/opt/automation/usr/bin/ruby' ].flatten
+
+  platforms [:ubuntu, :debian] do
+    provides automation_packages
+  end
+
+  platforms [:fedora, :redhat, :centos] do
+    provides  [ automation_packages, 'automation-ruby(abi) = 2.0', 
+        'automation-ruby(x86-64)', '/opt/automation/usr/bin/ruby' ].flatten
+  end
 
   source '', :with => :noop
 
