@@ -76,6 +76,7 @@ define rbenv::install_ruby( $ruby_version = $title ) {
         command     => "bash -c '. /etc/profile.d/rbenv.sh && rbenv install ${ruby_version}'",
         require     => [ Exec["unzip-ruby-build"], File["/etc/profile.d/rbenv.sh"] ],
         creates     => "${rbenv::install_base}/rbenv-${rbenv::rbenv_version}/versions/${ruby_version}",
+        timeout     => "1000",
     }->
     exec { "install-bundler-for-${ruby_version}":
         environment => ["RBENV_ROOT=${rbenv::install_base}/rbenv-${rbenv::rbenv_version}"],

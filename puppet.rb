@@ -47,10 +47,14 @@ class PuppetGem < FPM::Cookery::Recipe
     destdir('../bin').install workdir('omnibus.bin'), 'mco'
     destdir('../bin').install workdir('omnibus.bin'), 'zcollective'
 
-    # Symlink binaries to PATH using update-alternatives
     with_trueprefix do
+      # Symlink binaries to PATH using update-alternatives
       create_post_install_hook
       create_pre_uninstall_hook
+
+      # Add/remove puppet user/group
+      append_users_to_post_install_hook
+      create_post_uninstall_hook
     end
   end
 
@@ -63,9 +67,9 @@ class PuppetGem < FPM::Cookery::Recipe
 
   platforms [:ubuntu, :debian] do
     def build_files
-      system "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.conf"
-      system "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.init"
-      system "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.default"
+      system "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.conf"
+      system "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.init"
+      system "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.default"
       # Set the real daemon path in initscript defaults
       system "echo DAEMON=#{destdir}/bin/puppet >> puppet.default"
     end
@@ -80,11 +84,11 @@ class PuppetGem < FPM::Cookery::Recipe
 
   platforms [:fedora, :redhat, :centos] do
     def build_files
-      safesystem "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/puppet.conf"
-      safesystem "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.init"
-      safesystem "curl -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.sysconfig"
-      safesystem "curl -O https://raw.github.com/puppetlabs/marionette-collective/master/etc/client.cfg.dist"
-      safesystem "curl -O https://raw.github.com/puppetlabs/marionette-collective/master/etc/server.cfg.dist"
+      safesystem "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/puppet.conf"
+      safesystem "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.init"
+      safesystem "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.sysconfig"
+      safesystem "curl -OL https://raw.github.com/puppetlabs/marionette-collective/master/etc/client.cfg.dist"
+      safesystem "curl -OL https://raw.github.com/puppetlabs/marionette-collective/master/etc/server.cfg.dist"
       # Set the real daemon path in initscript defaults
       safesystem "echo PUPPETD=#{destdir}/bin/puppet >> client.sysconfig"
     end
@@ -100,6 +104,7 @@ class PuppetGem < FPM::Cookery::Recipe
     end
   end
 
+
   def create_post_install_hook
     File.open(builddir('post-install'), 'w', 0755) do |f|
       f.write <<-__POSTINST
@@ -113,7 +118,6 @@ for BIN in $BINS; do
   update-alternatives --install /usr/bin/$BIN $BIN $BIN_PATH/$BIN 100
 done
 
-exit 0
       __POSTINST
     end
   end
@@ -133,8 +137,56 @@ if [ "$1" != "upgrade" ]; then
   done
 fi
 
-exit 0
       __PRERM
+    end
+  end
+
+  def create_post_uninstall_hook
+    File.open(builddir('post-uninstall'), 'w', 0755) do |f|
+      f.write <<-__POSTRM
+#!/bin/sh
+set -e
+
+# Disabled as stock packages don't do it
+# userdel puppet || true
+
+exit 0
+      __POSTRM
+    end
+  end
+
+
+  platforms [:fedora, :redhat, :centos] do
+    def append_users_to_post_install_hook
+      File.open(builddir('post-install'), 'a', 0755) do |f|
+        f.write <<-__POSTINST
+
+getent group puppet &>/dev/null || groupadd -r puppet -g 52 &>/dev/null
+getent passwd puppet &>/dev/null || \
+useradd -r -u 52 -g puppet -d %{_localstatedir}/lib/puppet -s /sbin/nologin \
+    -c "Puppet" puppet &>/dev/null
+
+exit 0
+        __POSTINST
+      end
+    end
+  end
+
+  platforms [:ubuntu, :debian] do
+    def append_users_to_post_install_hook
+      File.open(builddir('post-install'), 'a', 0755) do |f|
+        f.write <<-__POSTINST
+
+if ! getent passwd puppet > /dev/null; then
+    adduser --quiet --system --group --home /var/lib/puppet  \
+    -no-create-home \
+    --gecos "Puppet configuration management daemon" \
+    puppet
+fi
+
+exit 0
+        __POSTINST
+      end
     end
   end
 
