@@ -35,7 +35,10 @@ class PuppetGem < FPM::Cookery::Recipe
   end
 
   def install
-    # Install init-script and puppet.conf
+    # create paths and install common config
+    install_files_common
+
+    # Install init-scripts and OS specific config
     install_files
 
     # Provide 'safe' binaries in /opt/<package>/bin like Vagrant does
@@ -65,18 +68,32 @@ class PuppetGem < FPM::Cookery::Recipe
     cleanenv_safesystem "#{destdir}/bin/gem install --no-ri --no-rdoc #{v} #{name}"
   end
 
+  def install_files_common 
+      etc('puppet').mkdir
+      var('lib/puppet/ssl/certs').mkpath
+      chmod 0771, var('lib/puppet/ssl')
+      var('run/puppet').mkpath
+      chmod 0750, var('log/puppet')
+      destdir('share/puppet/ext/rack/files').mkpath
+      destdir('share/puppet/ext/rack/files').install workdir('ext/puppet/rack/config.ru')  => 'config.ru'
+
+      etc('mcollective/plugin.d').mkpath
+      etc('mcollective/ssl/clients').mkpath
+      etc('mcollective').install workdir('ext/mcollective/server.cfg.dist') => 'server.cfg'
+      etc('mcollective').install workdir('ext/mcollective/client.cfg.dist') => 'client.cfg'
+  end
+
   platforms [:ubuntu, :debian] do
     def build_files
     end
     def install_files
-      etc('puppet').mkdir
       etc('puppet').install workdir('ext/puppet/debian/puppet.conf') => 'puppet.conf'
       etc('init.d').install workdir('ext/puppet/debian/puppet.init') => 'puppet'
       etc('default').install workdir('ext/puppet/debian/puppet.default') => 'puppet'
       chmod 0755, etc('init.d/puppet')
-      var('lib/puppet/ssl/certs').mkpath
-      destdir('share/puppet/ext/rack/files').mkpath
-      destdir('share/puppet/ext/rack/files').install workdir('ext/puppet/rack/config.ru')  => 'config.ru'
+
+      etc('init.d').install workdir('ext/puppet/debian/mcollective.init') => 'mcollective'
+      chmod 0755, etc('init.d/mcollective')
 
       # Set the real daemon path in initscript defaults
       safesystem "echo DAEMON=#{destdir}/bin/puppet >> /etc/default/puppet"
@@ -87,18 +104,14 @@ class PuppetGem < FPM::Cookery::Recipe
     def build_files
     end
     def install_files
-      etc('puppet').mkdir
       etc('puppet').install workdir('ext/puppet/redhat/puppet.conf') => 'puppet.conf'
       etc('init.d').install workdir('ext/puppet/redhat/client.init') => 'puppet'
       etc('sysconfig').install workdir('ext/puppet/redhat/client.sysconfig') => 'puppet'
-      etc('mcollective').mkdir
-      etc('mcollective').install workdir('ext/mcollective/server.cfg.dist') => 'server.cfg'
-      etc('mcollective').install workdir('ext/mcollective/client.cfg.dist') => 'client.cfg'
-      destdir('share/puppet/ext/rack/files').mkpath
-      destdir('share/puppet/ext/rack/files').install workdir('ext/puppet/rack/config.ru') => 'config.ru'
       chmod 0755, etc('init.d/puppet')
-      var('lib/puppet/ssl/certs').mkpath
 
+      etc('init.d').install workdir('ext/puppet/redhat/mcollective.init') => 'mcollective'
+      chmod 0755, etc('init.d/mcollective')
+      
       # Set the real daemon path in initscript defaults
       safesystem "echo PUPPETD=#{destdir}/bin/puppet >> /etc/sysconfig/puppet"
     end
@@ -166,6 +179,11 @@ getent passwd puppet &>/dev/null || \
 useradd -r -u 52 -g puppet -d %{_localstatedir}/lib/puppet -s /sbin/nologin \
     -c "Puppet" puppet &>/dev/null
 
+chown puppet:puppet %{_localstatedir}/lib/puppet
+chown puppet %{_localstatedir}/lib/ssl
+chown puppet %{_localstatedir}/lib/ssl/certs
+
+
 exit 0
         __POSTINST
       end
@@ -183,6 +201,10 @@ if ! getent passwd puppet > /dev/null; then
     --gecos "Puppet configuration management daemon" \
     puppet
 fi
+
+chown puppet:puppet /var/lib/puppet
+chown puppet /var/lib/ssl
+chown puppet /var/lib/ssl/certs
 
 exit 0
         __POSTINST
