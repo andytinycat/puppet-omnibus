@@ -59,7 +59,8 @@ class PuppetOmnibus < FPM::Cookery::Recipe
                  '/etc/init.d/puppet',
                  '/etc/sysconfig/puppet'
   end
-  omnibus_additional_paths config_files
+
+  omnibus_additional_paths config_files, "/var/lib/puppet"
 
   def build
     # Nothing
