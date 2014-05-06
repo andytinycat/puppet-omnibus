@@ -36,13 +36,13 @@ Vagrant.configure("2") do |config|
 
     config.vm.define :ubuntu12 do |ubuntu12|
 
-        box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-%s-nocm.box'
+        box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-%s-nocm.box'
 
         ubuntu12.vm.box      = "puppet_ubuntu-server-12042-x64-nocm"
-        ubuntu12.vm.box_url  = sprintf(box_url, 'vbox4210')
+        ubuntu12.vm.box_url  = sprintf(box_url, 'server-12042-x64-vbox4210')
 
         ubuntu12.vm.provider vmware do |v,override|
-            override.vm.box_url = sprintf(box_url, 'fusion503')
+            override.vm.box_url = sprintf(box_url, 'svr-12042-x64-vf503')
         end
 
         ubuntu12.vm.hostname = "ubuntu12"
