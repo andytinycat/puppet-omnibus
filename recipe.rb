@@ -52,14 +52,24 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   platforms [:ubuntu, :debian] do
     config_files '/etc/puppet/puppet.conf',
                  '/etc/init.d/puppet',
-                 '/etc/default/puppet'
+                 '/etc/default/puppet',
+                 '/etc/mcollective/server.cfg',
+                 '/etc/mcollective/client.cfg'
   end
   platforms [:fedora, :redhat, :centos] do
     config_files '/etc/puppet/puppet.conf',
                  '/etc/init.d/puppet',
-                 '/etc/sysconfig/puppet'
+                 '/etc/sysconfig/puppet',
+                 '/etc/mcollective/server.cfg',
+                 '/etc/mcollective/client.cfg'
   end
-  omnibus_additional_paths config_files
+
+  omnibus_additional_paths config_files, '/var/lib/puppet/ssl/certs',
+                                         '/var/run/puppet',
+                                         "/opt/#{name}/embedded/share/puppet/ext/rack/files/config.ru",
+                                         '/etc/mcollective/plugin.d',
+                                         '/etc/mcollective/ssl/clients'
+                                           
 
   def build
     # Nothing

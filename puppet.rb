@@ -35,7 +35,10 @@ class PuppetGem < FPM::Cookery::Recipe
   end
 
   def install
-    # Install init-script and puppet.conf
+    # create paths and install common config
+    install_files_common
+
+    # Install init-scripts and OS specific config
     install_files
 
     # Provide 'safe' binaries in /opt/<package>/bin like Vagrant does
@@ -46,7 +49,7 @@ class PuppetGem < FPM::Cookery::Recipe
     destdir('../bin').install workdir('omnibus.bin'), 'hiera'
     destdir('../bin').install workdir('omnibus.bin'), 'mco'
     destdir('../bin').install workdir('omnibus.bin'), 'zcollective'
-
+     
     with_trueprefix do
       # Symlink binaries to PATH using update-alternatives
       create_post_install_hook
@@ -65,42 +68,51 @@ class PuppetGem < FPM::Cookery::Recipe
     cleanenv_safesystem "#{destdir}/bin/gem install --no-ri --no-rdoc #{v} #{name}"
   end
 
+  def install_files_common 
+      etc('puppet').mkdir
+      var('lib/puppet/ssl/certs').mkpath
+      chmod 0771, var('lib/puppet/ssl')
+      var('run/puppet').mkdir
+      destdir('share/puppet/ext/rack/files').mkpath
+      destdir('share/puppet/ext/rack/files').install workdir('ext/puppet/rack/config.ru')  => 'config.ru'
+
+      etc('mcollective/plugin.d').mkpath
+      etc('mcollective/ssl/clients').mkpath
+      etc('mcollective').install workdir('ext/mcollective/server.cfg.dist') => 'server.cfg'
+      etc('mcollective').install workdir('ext/mcollective/client.cfg.dist') => 'client.cfg'
+  end
+
   platforms [:ubuntu, :debian] do
     def build_files
-      system "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.conf"
-      system "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.init"
-      system "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.default"
-      # Set the real daemon path in initscript defaults
-      system "echo DAEMON=#{destdir}/bin/puppet >> puppet.default"
     end
     def install_files
-      etc('puppet').mkdir
-      etc('puppet').install builddir('puppet.conf') => 'puppet.conf'
-      etc('init.d').install builddir('puppet.init') => 'puppet'
-      etc('default').install builddir('puppet.default') => 'puppet'
+      etc('puppet').install workdir('ext/puppet/debian/puppet.conf') => 'puppet.conf'
+      etc('init.d').install workdir('ext/puppet/debian/puppet.init') => 'puppet'
+      etc('default').install workdir('ext/puppet/debian/puppet.default') => 'puppet'
       chmod 0755, etc('init.d/puppet')
+
+      etc('init.d').install workdir('ext/mcollective/debian/mcollective.init') => 'mcollective'
+      chmod 0755, etc('init.d/mcollective')
+
+      # Set the real daemon path in initscript defaults
+      safesystem "echo DAEMON=#{destdir}/bin/puppet >> /etc/default/puppet"
     end
   end
 
   platforms [:fedora, :redhat, :centos] do
     def build_files
-      safesystem "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/puppet.conf"
-      safesystem "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.init"
-      safesystem "curl -OL https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.sysconfig"
-      safesystem "curl -OL https://raw.github.com/puppetlabs/marionette-collective/master/etc/client.cfg.dist"
-      safesystem "curl -OL https://raw.github.com/puppetlabs/marionette-collective/master/etc/server.cfg.dist"
-      # Set the real daemon path in initscript defaults
-      safesystem "echo PUPPETD=#{destdir}/bin/puppet >> client.sysconfig"
     end
     def install_files
-      etc('puppet').mkdir
-      etc('puppet').install builddir('puppet.conf') => 'puppet.conf'
-      etc('init.d').install builddir('client.init') => 'puppet'
-      etc('sysconfig').install builddir('client.sysconfig') => 'puppet'
+      etc('puppet').install workdir('ext/puppet/redhat/puppet.conf') => 'puppet.conf'
+      etc('init.d').install workdir('ext/puppet/redhat/client.init') => 'puppet'
+      etc('sysconfig').install workdir('ext/puppet/redhat/client.sysconfig') => 'puppet'
       chmod 0755, etc('init.d/puppet')
-      etc('mcollective').mkdir
-      etc('mcollective').install builddir('server.cfg.dist') => 'server.cfg'
-      etc('mcollective').install builddir('client.cfg.dist') => 'client.cfg'
+
+      etc('init.d').install workdir('ext/mcollective/redhat/mcollective.init') => 'mcollective'
+      chmod 0755, etc('init.d/mcollective')
+      
+      # Set the real daemon path in initscript defaults
+      safesystem "echo PUPPETD=#{destdir}/bin/puppet >> /etc/sysconfig/puppet"
     end
   end
 
@@ -166,6 +178,11 @@ getent passwd puppet &>/dev/null || \
 useradd -r -u 52 -g puppet -d %{_localstatedir}/lib/puppet -s /sbin/nologin \
     -c "Puppet" puppet &>/dev/null
 
+chown puppet:puppet %{_localstatedir}/lib/puppet
+chown puppet %{_localstatedir}/lib/ssl
+chown puppet %{_localstatedir}/lib/ssl/certs
+
+
 exit 0
         __POSTINST
       end
@@ -183,6 +200,10 @@ if ! getent passwd puppet > /dev/null; then
     --gecos "Puppet configuration management daemon" \
     puppet
 fi
+
+chown puppet:puppet /var/lib/puppet
+chown puppet /var/lib/puppet/ssl
+chown puppet /var/lib/puppet/ssl/certs
 
 exit 0
         __POSTINST
