@@ -181,8 +181,8 @@ useradd -r -u 52 -g puppet -d %{_localstatedir}/lib/puppet -s /sbin/nologin \
     -c "Puppet" puppet &>/dev/null
 
 chown puppet:puppet %{_localstatedir}/lib/puppet
-chown puppet %{_localstatedir}/lib/ssl
-chown puppet %{_localstatedir}/lib/ssl/certs
+chown puppet %{_localstatedir}/lib/puppet/ssl
+chown puppet %{_localstatedir}/lib/puppet/ssl/certs
 
 
 exit 0
