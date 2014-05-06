@@ -202,8 +202,8 @@ if ! getent passwd puppet > /dev/null; then
 fi
 
 chown puppet:puppet /var/lib/puppet
-chown puppet /var/lib/ssl
-chown puppet /var/lib/ssl/certs
+chown puppet /var/lib/puppet/ssl
+chown puppet /var/lib/puppet/ssl/certs
 
 exit 0
         __POSTINST
