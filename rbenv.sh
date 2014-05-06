@@ -14,6 +14,11 @@ wget -c https://github.com/sstephenson/ruby-build/archive/v${ruby_build_version}
 wget -c https://github.com/carsomyr/rbenv-bundler/archive/${rbenv_bundler_version}.zip -O /var/tmp/rbenv-bundler.zip
 wget -c https://github.com/dcarley/rbenv-sudo/archive/master.zip -O /var/tmp/rbenv-sudo.zip
 
+if [ -x /usr/bin/apt-get ]; then
+    apt-get update
+    apt-get install unzip
+fi
+
 unzip -o /var/tmp/rbenv.zip -d ${install_base}
 mkdir -p ${install_base}/rbenv-${rbenv_version}/plugins
 
