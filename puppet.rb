@@ -72,8 +72,7 @@ class PuppetGem < FPM::Cookery::Recipe
       etc('puppet').mkdir
       var('lib/puppet/ssl/certs').mkpath
       chmod 0771, var('lib/puppet/ssl')
-      var('run/puppet').mkpath
-      chmod 0750, var('log/puppet')
+      var('run/puppet').mkdir
       destdir('share/puppet/ext/rack/files').mkpath
       destdir('share/puppet/ext/rack/files').install workdir('ext/puppet/rack/config.ru')  => 'config.ru'
 
@@ -92,7 +91,7 @@ class PuppetGem < FPM::Cookery::Recipe
       etc('default').install workdir('ext/puppet/debian/puppet.default') => 'puppet'
       chmod 0755, etc('init.d/puppet')
 
-      etc('init.d').install workdir('ext/puppet/debian/mcollective.init') => 'mcollective'
+      etc('init.d').install workdir('ext/mcollective/debian/mcollective.init') => 'mcollective'
       chmod 0755, etc('init.d/mcollective')
 
       # Set the real daemon path in initscript defaults
@@ -109,7 +108,7 @@ class PuppetGem < FPM::Cookery::Recipe
       etc('sysconfig').install workdir('ext/puppet/redhat/client.sysconfig') => 'puppet'
       chmod 0755, etc('init.d/puppet')
 
-      etc('init.d').install workdir('ext/puppet/redhat/mcollective.init') => 'mcollective'
+      etc('init.d').install workdir('ext/mcollective/redhat/mcollective.init') => 'mcollective'
       chmod 0755, etc('init.d/mcollective')
       
       # Set the real daemon path in initscript defaults
