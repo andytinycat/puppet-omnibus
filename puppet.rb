@@ -27,9 +27,11 @@ class PuppetGem < FPM::Cookery::Recipe
     gem_install 'ruby-shadow',        '2.2.0'
     gem_install 'gpgme',              '2.0.2'
     gem_install 'mcollective-client', '2.4.0'
+    gem_install 'mcollective',        '2.2.3'
     gem_install 'zcollective',        '0.0.9'
     gem_install 'unicorn',            '4.8.2'
     gem_install 'rack',               '1.5.2'
+    gem_install 'stomp',              '1.2.2'
     gem_install name,                 version
 
     # Download init scripts and conf
