@@ -97,6 +97,7 @@ class PuppetGem < FPM::Cookery::Recipe
 
       etc('init.d').install workdir('ext/mcollective/debian/mcollective.init') => 'mcollective'
       chmod 0755, etc('init.d/mcollective')
+      etc('default').install workdir('ext/mcollective/debian/default') => 'mcollective'
 
       # Set the real daemon path in initscript defaults
       safesystem "echo DAEMON=#{destdir}/bin/puppet >> /etc/default/puppet"
@@ -115,6 +116,7 @@ class PuppetGem < FPM::Cookery::Recipe
 
       etc('init.d').install workdir('ext/mcollective/redhat/mcollective.init') => 'mcollective'
       chmod 0755, etc('init.d/mcollective')
+      etc('syconfig').install workdir('ext/mcollective/redhat/sysconfig') => 'mcollective'
       
       # Set the real daemon path in initscript defaults
       safesystem "echo PUPPETD=#{destdir}/bin/puppet >> /etc/sysconfig/puppet"
