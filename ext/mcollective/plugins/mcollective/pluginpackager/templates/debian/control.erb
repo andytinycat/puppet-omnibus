@@ -1,0 +1,15 @@
+Source: <%= @package_name %>
+Homepage: <%= @plugin.metadata[:url] %>
+Section: utils
+Priority: extra
+Build-Depends: debhelper (>= 7), cdbs, dpatch
+Maintainer: <%= @plugin.metadata[:author] %>
+Standards-Version: 3.9.1
+<% @plugin.packagedata.each do |type, data| %>
+Package: <%= "#{@package_name}-#{type}" %>
+Architecture: all
+Depends: <%= build_dependency_string(data) %>
+Description: <%= @plugin.metadata[:description]%>
+ <%= data[:description]%>
+ .
+<% end -%>

@@ -77,13 +77,13 @@ class PuppetGem < FPM::Cookery::Recipe
       var('lib/puppet/ssl/certs').mkpath
       chmod 0771, var('lib/puppet/ssl')
       var('run/puppet').mkdir
-      destdir('share/puppet/ext/rack/files').mkpath
       destdir('share/puppet/ext/rack/files').install workdir('ext/puppet/rack/config.ru')  => 'config.ru'
 
       etc('mcollective/plugin.d').mkpath
       etc('mcollective/ssl/clients').mkpath
       etc('mcollective').install workdir('ext/mcollective/server.cfg.dist') => 'server.cfg'
       etc('mcollective').install workdir('ext/mcollective/client.cfg.dist') => 'client.cfg'
+      destdir('share/mcollective/plugins').install Dir["#{workdir}/ext/mcollective/plugins/*"] 
   end
 
   platforms [:ubuntu, :debian] do
@@ -116,7 +116,7 @@ class PuppetGem < FPM::Cookery::Recipe
 
       etc('init.d').install workdir('ext/mcollective/redhat/mcollective.init') => 'mcollective'
       chmod 0755, etc('init.d/mcollective')
-      etc('syconfig').install workdir('ext/mcollective/redhat/sysconfig') => 'mcollective'
+      etc('sysconfig').install workdir('ext/mcollective/redhat/sysconfig') => 'mcollective'
       
       # Set the real daemon path in initscript defaults
       safesystem "echo PUPPETD=#{destdir}/bin/puppet >> /etc/sysconfig/puppet"

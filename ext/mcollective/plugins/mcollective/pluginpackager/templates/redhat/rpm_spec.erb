@@ -1,0 +1,63 @@
+Name: <%= @package_name %>
+Summary: <%= @plugin.metadata[:description] %>
+Version: <%= @plugin.metadata[:version] %>
+Release: <%= @plugin.revision %>%{?dist}
+License: <%= @plugin.metadata[:license]%>
+URL: <%= @plugin.metadata[:url]%>
+Vendor: <%= @plugin.vendor%>
+Packager: <%= @plugin.metadata[:author]%>
+BuildArch: noarch
+Group: System Tools
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source0: <%= @package_name_and_version%>.tgz
+
+%description
+<%= @plugin.metadata[:description] %>
+
+%prep
+%setup
+
+%build
+<% package_files = plugin_files.map{ |f| File.join(@libdir, File.expand_path(f).gsub(/#{File.expand_path(@plugin.path)}|\.\//, '')) } -%>
+<% dirs = package_files.map{ |f| File.dirname(f) }.uniq -%>
+
+%install
+rm -rf %{buildroot}
+<% dirs.each do |dir| -%>
+%{__install} -d -m0755 %{buildroot}<%= dir%>
+<% end -%>
+<% package_files.each do |file| -%>
+%{__install} -m0644 -v <%= (file[0].chr == '/') ? file[1..file.size-1]: file%> %{buildroot}<%=file %>
+<% end -%>
+
+<% @plugin.packagedata.each do |type, data| %>
+%package <%= type %>
+Summary: <%= @plugin.metadata[:description] %>
+<% if data[:plugindependency] %>
+Requires: <%= data[:plugindependency][:name] -%> = <%= data[:plugindependency][:version]%>-<%= data[:plugindependency][:revision]%>%{?dist}
+<% end -%>
+<% PluginPackager.filter_dependencies('redhat', data[:dependencies]).each do |dep|-%>
+Requires: <%= dep[:name] -%> <%= ">= #{dep[:version]}" if dep[:version]%><%="-#{dep[:revision]}" if dep[:revision]%>
+<% end -%>
+%description <%= type %>
+<%= data[:description] %>
+
+%files <%= type %>
+%defattr(-, root, root, -)
+<% package_files(data[:files]).each do |file| -%>
+<%= file %>
+<% end -%>
+<% end -%>
+
+<% if @plugin.preinstall -%>
+%pre
+<%= @plugin.preinstall %>
+<% end -%>
+<% if @plugin.postinstall -%>
+%post
+<%= @plugin.postinstall%>
+<% end -%>
+
+%changelog
+* <%= Time.now.strftime("%a %b %d %Y") -%> <%= @plugin.metadata[:author]%> - <%= @plugin.metadata[:version]%>-<%= @plugin.revision %>
+- Built Package <%= @plugin.metadata[:name] -%>
