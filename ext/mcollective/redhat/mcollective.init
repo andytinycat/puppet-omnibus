@@ -16,7 +16,7 @@
 # Description:       Enable service provided by daemon.
 ### END INIT INFO
 
-mcollectived="/opt/scalefactory/embedded/bin/mcollectived"
+mcollectived="/usr/sbin/mcollectived"
 pidfile="/var/run/mcollectived.pid"
 if [ -d /var/lock/subsys ]; then
     # RedHat/CentOS/etc who use subsys

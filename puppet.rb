@@ -100,6 +100,7 @@ class PuppetGem < FPM::Cookery::Recipe
 
       # Set the real daemon path in initscript defaults
       safesystem "echo DAEMON=#{destdir}/bin/puppet >> /etc/default/puppet"
+      safesystem "echo mcollectived=#{destdir}/bin/mcollectived >> /etc/default/mcollective"
     end
   end
 
@@ -117,6 +118,7 @@ class PuppetGem < FPM::Cookery::Recipe
       
       # Set the real daemon path in initscript defaults
       safesystem "echo PUPPETD=#{destdir}/bin/puppet >> /etc/sysconfig/puppet"
+      safesystem "echo mcollectived=#{destdir}/bin/mcollectived >> /etc/sysconfig/mcollective"
     end
   end
 

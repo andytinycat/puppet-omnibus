@@ -27,7 +27,7 @@ uid=`id -u`
 pidfile="/var/run/mcollectived.pid"
 
 name="mcollective"
-mcollectived=/opt/scalefactory/embedded/bin/mcollectived
+mcollectived=/usr/sbin/mcollectived
 daemonopts="--pid=${pidfile}  --config=/etc/mcollective/server.cfg"
 
 
