@@ -26,17 +26,17 @@ else
     lockfile="/var/lock/mcollective"
 fi
 
-# Check that binary exists
-if ! [ -f $mcollectived ]; then
-    echo "mcollectived binary not found"
-    exit 5
-fi
-
 # Source function library.
 . /etc/init.d/functions
 
 if [ -f /etc/sysconfig/mcollective ]; then
     . /etc/sysconfig/mcollective
+fi
+
+# Check that binary exists
+if ! [ -f $mcollectived ]; then
+    echo "mcollectived binary not found"
+    exit 5
 fi
 
 # Determine if we can use the -p option to daemon, killproc, and status.

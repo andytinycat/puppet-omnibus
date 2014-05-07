@@ -27,9 +27,11 @@ class PuppetGem < FPM::Cookery::Recipe
     gem_install 'ruby-shadow',        '2.2.0'
     gem_install 'gpgme',              '2.0.2'
     gem_install 'mcollective-client', '2.4.0'
+    gem_install 'mcollective',        '2.2.3'
     gem_install 'zcollective',        '0.0.9'
     gem_install 'unicorn',            '4.8.2'
     gem_install 'rack',               '1.5.2'
+    gem_install 'stomp',              '1.2.2'
     gem_install name,                 version
 
     # Download init scripts and conf
@@ -75,13 +77,13 @@ class PuppetGem < FPM::Cookery::Recipe
       var('lib/puppet/ssl/certs').mkpath
       chmod 0771, var('lib/puppet/ssl')
       var('run/puppet').mkdir
-      destdir('share/puppet/ext/rack/files').mkpath
       destdir('share/puppet/ext/rack/files').install workdir('ext/puppet/rack/config.ru')  => 'config.ru'
 
       etc('mcollective/plugin.d').mkpath
       etc('mcollective/ssl/clients').mkpath
       etc('mcollective').install workdir('ext/mcollective/server.cfg.dist') => 'server.cfg'
       etc('mcollective').install workdir('ext/mcollective/client.cfg.dist') => 'client.cfg'
+      destdir('share/mcollective/plugins').install Dir["#{workdir}/ext/mcollective/plugins/*"] 
   end
 
   platforms [:ubuntu, :debian] do
@@ -95,9 +97,11 @@ class PuppetGem < FPM::Cookery::Recipe
 
       etc('init.d').install workdir('ext/mcollective/debian/mcollective.init') => 'mcollective'
       chmod 0755, etc('init.d/mcollective')
+      etc('default').install workdir('ext/mcollective/debian/default') => 'mcollective'
 
       # Set the real daemon path in initscript defaults
       safesystem "echo DAEMON=#{destdir}/bin/puppet >> /etc/default/puppet"
+      safesystem "echo mcollectived=#{destdir}/bin/mcollectived >> /etc/default/mcollective"
     end
   end
 
@@ -112,9 +116,11 @@ class PuppetGem < FPM::Cookery::Recipe
 
       etc('init.d').install workdir('ext/mcollective/redhat/mcollective.init') => 'mcollective'
       chmod 0755, etc('init.d/mcollective')
+      etc('sysconfig').install workdir('ext/mcollective/redhat/sysconfig') => 'mcollective'
       
       # Set the real daemon path in initscript defaults
       safesystem "echo PUPPETD=#{destdir}/bin/puppet >> /etc/sysconfig/puppet"
+      safesystem "echo mcollectived=#{destdir}/bin/mcollectived >> /etc/sysconfig/mcollective"
     end
   end
 
@@ -126,7 +132,7 @@ class PuppetGem < FPM::Cookery::Recipe
 set -e
 
 BIN_PATH="#{destdir}/bin"
-BINS="puppet facter hiera"
+BINS="puppet facter hiera mco"
 
 for BIN in $BINS; do
   update-alternatives --install /usr/bin/$BIN $BIN $BIN_PATH/$BIN 100
@@ -143,7 +149,7 @@ done
 set -e
 
 BIN_PATH="#{destdir}/bin"
-BINS="puppet facter hiera"
+BINS="puppet facter hiera mco"
 
 if [ "$1" != "upgrade" ]; then
   for BIN in $BINS; do

@@ -53,6 +53,7 @@ class PuppetOmnibus < FPM::Cookery::Recipe
     config_files '/etc/puppet/puppet.conf',
                  '/etc/init.d/puppet',
                  '/etc/default/puppet',
+                 '/etc/default/mcollective',
                  '/etc/mcollective/server.cfg',
                  '/etc/mcollective/client.cfg'
   end
@@ -60,15 +61,16 @@ class PuppetOmnibus < FPM::Cookery::Recipe
     config_files '/etc/puppet/puppet.conf',
                  '/etc/init.d/puppet',
                  '/etc/sysconfig/puppet',
+                 '/etc/sysconfig/mcollective',
                  '/etc/mcollective/server.cfg',
                  '/etc/mcollective/client.cfg'
   end
 
   omnibus_additional_paths config_files, '/var/lib/puppet/ssl/certs',
                                          '/var/run/puppet',
-                                         "/opt/#{name}/embedded/share/puppet/ext/rack/files/config.ru",
                                          '/etc/mcollective/plugin.d',
-                                         '/etc/mcollective/ssl/clients'
+                                         '/etc/mcollective/ssl/clients',
+                                         '/etc/init.d/mcollective'
                                            
 
   def build
