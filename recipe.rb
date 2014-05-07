@@ -68,7 +68,8 @@ class PuppetOmnibus < FPM::Cookery::Recipe
                                          '/var/run/puppet',
                                          "/opt/#{name}/embedded/share/puppet/ext/rack/files/config.ru",
                                          '/etc/mcollective/plugin.d',
-                                         '/etc/mcollective/ssl/clients'
+                                         '/etc/mcollective/ssl/clients',
+                                         '/etc/init.d/mcollective'
                                            
 
   def build
