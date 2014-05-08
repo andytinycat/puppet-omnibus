@@ -30,9 +30,6 @@ class PuppetGem < FPM::Cookery::Recipe
     gem_install 'unicorn',            '4.8.2'
     gem_install 'rack',               '1.5.2'
     gem_install name,                 version
-
-    # Download init scripts and conf
-    build_files
   end
 
   def install
@@ -90,8 +87,6 @@ class PuppetGem < FPM::Cookery::Recipe
   end
 
   platforms [:fedora, :redhat, :centos] do
-    def build_files
-    end
     def install_files
       etc('puppet').install workdir('ext/puppet/redhat/puppet.conf') => 'puppet.conf'
       etc('init.d').install workdir('ext/puppet/redhat/client.init') => 'puppet'
