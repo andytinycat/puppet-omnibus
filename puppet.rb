@@ -59,9 +59,9 @@ class PuppetGem < FPM::Cookery::Recipe
 
   platforms [:ubuntu, :debian] do
     def build_files
-      system "curl -L -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.conf"
-      system "curl -L -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.init"
-      system "curl -L -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/debian/puppet.default"
+      system "curl -L -O https://raw.githubusercontent.com/puppetlabs/puppet/#{version}/ext/debian/puppet.conf"
+      system "curl -L -O https://raw.githubusercontent.com/puppetlabs/puppet/#{version}/ext/debian/puppet.init"
+      system "curl -L -O https://raw.githubusercontent.com/puppetlabs/puppet/#{version}/ext/debian/puppet.default"
       # Set the real daemon path in initscript defaults
       system "echo DAEMON=#{destdir}/bin/puppet >> puppet.default"
     end
@@ -76,9 +76,9 @@ class PuppetGem < FPM::Cookery::Recipe
 
   platforms [:fedora, :redhat, :centos] do
     def build_files
-      safesystem "curl -L -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/puppet.conf"
-      safesystem "curl -L -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.init"
-      safesystem "curl -L -O https://raw.github.com/puppetlabs/puppet/#{version}/ext/redhat/client.sysconfig"
+      safesystem "curl -L -O https://raw.githubusercontent.com/puppetlabs/puppet/#{version}/ext/redhat/puppet.conf"
+      safesystem "curl -L -O https://raw.githubusercontent.com/puppetlabs/puppet/#{version}/ext/redhat/client.init"
+      safesystem "curl -L -O https://raw.githubusercontent.com/puppetlabs/puppet/#{version}/ext/redhat/client.sysconfig"
       # Set the real daemon path in initscript defaults
       safesystem "echo PUPPETD=#{destdir}/bin/puppet >> client.sysconfig"
     end
