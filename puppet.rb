@@ -2,7 +2,7 @@ class PuppetGem < FPM::Cookery::Recipe
   description 'Puppet gem stack'
 
   name 'puppet'
-  version '3.3.2'
+  version '3.5.1'
 
   source "nothing", :with => :noop
 
