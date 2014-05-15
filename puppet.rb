@@ -18,14 +18,14 @@ class PuppetGem < FPM::Cookery::Recipe
 
   def build
     # Install gems using the gem command from destdir
-    gem_install 'facter',      '1.7.3'
-    gem_install 'json_pure',   '1.8.0'
-    gem_install 'hiera',       '1.3.0'
-    gem_install 'deep_merge',  '1.0.0'
-    gem_install 'rgen',        '0.6.5'
-    gem_install 'ruby-augeas', '0.4.1'
-    gem_install 'ruby-shadow', '2.2.0'
-    gem_install 'gpgme',       '2.0.2'
+    gem_install 'facter',      '1.7.5'
+    gem_install 'json_pure',   '1.8.1'
+    gem_install 'hiera',       '1.3.2'
+    gem_install 'deep_merge',  '1.0.1'
+    gem_install 'rgen',        '0.6.6'
+    gem_install 'ruby-augeas', '0.5.0'
+    gem_install 'ruby-shadow', '2.3.4'
+    gem_install 'gpgme',       '2.0.5'
     gem_install name,          version
 
     # Download init scripts and conf
