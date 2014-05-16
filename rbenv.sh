@@ -17,6 +17,11 @@ wget -c https://github.com/dcarley/rbenv-sudo/archive/master.zip -O /var/tmp/rbe
 if [ -x /usr/bin/apt-get ]; then
     apt-get update
     apt-get install unzip
+    apt-get install libpq-dev
+fi
+
+if [ -x /usr/bin/yum ]; then
+    yum install -y postgresql-devel
 fi
 
 unzip -o /var/tmp/rbenv.zip -d ${install_base}
