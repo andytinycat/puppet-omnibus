@@ -2,11 +2,11 @@ class Ruby193 < FPM::Cookery::Recipe
   description 'LibYAML is a YAML 1.1 parser and emitter written in C'
 
   name 'libyaml'
-  version '0.1.5'
+  version '0.1.6'
   revision 1
   homepage 'http://pyyaml.org/wiki/LibYAML'
-  source 'http://pyyaml.org/download/libyaml/yaml-0.1.5.tar.gz'
-  sha256 'fa87ee8fb7b936ec04457bc044cd561155e1000a4d25029867752e543c2d3bef'
+  source 'http://pyyaml.org/download/libyaml/yaml-0.1.6.tar.gz'
+  sha256 '7da6971b4bd08a986dd2a61353bc422362bd0edcc67d7ebaac68c95f74182749'
 
   maintainer '<beddari@deploy.no>'
   vendor     'fpm'
