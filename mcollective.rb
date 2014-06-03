@@ -9,7 +9,7 @@ class Mcollective < FPM::Cookery::Recipe
 
   def build
     # Install gems using the gem command from destdir
-    gem_install 'stomp',              '1.2.2'
+    gem_install 'stomp',              '1.3.2'
   end
 
   def install 
