@@ -42,10 +42,10 @@ class PuppetOmnibus < FPM::Cookery::Recipe
                   'puppet'
 
 
-  if ENV.has_key?('BUILD_NUMBER')
-    revision ENV['BUILD_NUMBER']
+  if ENV.has_key?('PKG_VERSION')
+    revision ENV['PKG_VERSION']
   else
-    puts "Using revision number 0, as no BUILD_NUMBER passed - this may not be correct"
+    puts "Using revision number 0, as no PKG_VERSION passed - this may not be correct"
     revision 0
   end
 
