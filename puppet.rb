@@ -26,6 +26,7 @@ class PuppetGem < FPM::Cookery::Recipe
     gem_install 'ruby-augeas',        '0.4.1'
     gem_install 'ruby-shadow',        '2.2.0'
     gem_install 'gpgme',              '2.0.2'
+    gem_install 'hiera-eyaml',        '2.0.2'
     gem_install 'zcollective',        '0.0.9'
     gem_install 'unicorn',            '4.8.2'
     gem_install 'rack',               '1.5.2'
@@ -48,6 +49,7 @@ class PuppetGem < FPM::Cookery::Recipe
     destdir('../bin').install workdir('omnibus.bin'), 'hiera'
     destdir('../bin').install workdir('omnibus.bin'), 'mco'
     destdir('../bin').install workdir('omnibus.bin'), 'zcollective'
+    destdir('../bin').install workdir('omnibus.bin'), 'eyaml'
      
     with_trueprefix do
       # Symlink binaries to PATH using update-alternatives
@@ -107,7 +109,7 @@ class PuppetGem < FPM::Cookery::Recipe
 set -e
 
 BIN_PATH="#{destdir}/bin"
-BINS="puppet facter hiera mco"
+BINS="puppet facter hiera mco eyaml"
 
 for BIN in $BINS; do
   update-alternatives --install /usr/bin/$BIN $BIN $BIN_PATH/$BIN 100
@@ -124,7 +126,7 @@ done
 set -e
 
 BIN_PATH="#{destdir}/bin"
-BINS="puppet facter hiera mco"
+BINS="puppet facter hiera mco eyaml"
 
 if [ "$1" != "upgrade" ]; then
   for BIN in $BINS; do

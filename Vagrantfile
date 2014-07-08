@@ -49,6 +49,15 @@ Vagrant.configure("2") do |config|
 
     end
 
+    config.vm.define :ubuntu14 do |ubuntu14|
+
+        ubuntu14.vm.box      = 'puppetlabs/ubuntu-14.04-64-nocm'
+#        ubuntu14.vm.box_url  = 'puppetlabs/ubuntu-14.04-64-nocm'
+
+        ubuntu14.vm.hostname = "ubuntu14"
+
+    end
+
     config.vm.provision "shell", path: "rbenv.sh"
 
 end
