@@ -21,40 +21,22 @@ Vagrant.configure("2") do |config|
 
     config.vm.define :centos6 do |centos6|
 
-        box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-%s-nocm.box'
-
-        centos6.vm.box      = "puppet_centos6_nocm"
-        centos6.vm.box_url  = sprintf(box_url, 'vbox4210')
-
-        centos6.vm.provider vmware do |v,override|
-            override.vm.box_url = sprintf(box_url, 'fusion503')
-        end
-
-        centos6.vm.hostname = "centos6"
+        centos6.vm.box      = 'puppetlabs/centos-6.5-64-nocm'
+        centos6.vm.hostname = 'centos6'
 
     end
 
     config.vm.define :ubuntu12 do |ubuntu12|
 
-        box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-%s-nocm.box'
-
-        ubuntu12.vm.box      = "puppet_ubuntu-server-12042-x64-nocm"
-        ubuntu12.vm.box_url  = sprintf(box_url, 'server-12042-x64-vbox4210')
-
-        ubuntu12.vm.provider vmware do |v,override|
-            override.vm.box_url = sprintf(box_url, 'svr-12042-x64-vf503')
-        end
-
-        ubuntu12.vm.hostname = "ubuntu12"
+        ubuntu14.vm.box      = 'puppetlabs/ubuntu-12.04-64-nocm'
+        ubuntu12.vm.hostname = 'ubuntu12'
 
     end
 
     config.vm.define :ubuntu14 do |ubuntu14|
 
         ubuntu14.vm.box      = 'puppetlabs/ubuntu-14.04-64-nocm'
-#        ubuntu14.vm.box_url  = 'puppetlabs/ubuntu-14.04-64-nocm'
-
-        ubuntu14.vm.hostname = "ubuntu14"
+        ubuntu14.vm.hostname = 'ubuntu14'
 
     end
 
