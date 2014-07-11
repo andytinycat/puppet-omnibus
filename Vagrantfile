@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
 
     config.vm.define :ubuntu12 do |ubuntu12|
 
-        ubuntu14.vm.box      = 'puppetlabs/ubuntu-12.04-64-nocm'
+        ubuntu12.vm.box      = 'puppetlabs/ubuntu-12.04-64-nocm'
         ubuntu12.vm.hostname = 'ubuntu12'
 
     end
