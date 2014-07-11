@@ -2,7 +2,7 @@
 
 set +x
 
-supported_distros="centos6 ubuntu12"
+supported_distros="centos6 ubuntu12 ubuntu14"
 
 ## FUNCTIONS
 

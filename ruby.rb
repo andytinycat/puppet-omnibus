@@ -2,11 +2,11 @@ class Ruby193 < FPM::Cookery::Recipe
   description 'The Ruby virtual machine'
 
   name 'ruby'
-  version '2.0.0.353'
+  version '2.0.0.481'
   revision 1
   homepage 'http://www.ruby-lang.org/'
-  source 'http://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p353.tar.bz2'
-  sha256 '3de4e4d9aff4682fa4f8ed2b70bd0d746fae17452fc3d3a8e8f505ead9105ad9'
+  source 'http://ftp.ruby-lang.org/pub/ruby/2.0/ruby-2.0.0-p481.tar.bz2'
+  sha256 '0762dad7e96d8091bdf33b3e3176c2066fbf3dc09dfe85fbf40e74e83c63d8e2'
 
   maintainer '<github@tinycat.co.uk>'
   vendor     'fpm'
