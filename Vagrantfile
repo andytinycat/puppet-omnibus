@@ -21,8 +21,16 @@ Vagrant.configure("2") do |config|
 
     config.vm.define :centos6 do |centos6|
 
-        centos6.vm.box      = 'puppetlabs/centos-6.5-64-nocm'
-        centos6.vm.hostname = 'centos6'
+        box_url = 'http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-%s-nocm.box'
+
+        centos6.vm.box      = "puppet_centos6_nocm"
+        centos6.vm.box_url  = sprintf(box_url, 'vbox4210')
+
+        centos6.vm.provider vmware do |v,override|
+            override.vm.box_url = sprintf(box_url, 'fusion503')
+        end
+
+        centos6.vm.hostname = "centos6"
 
     end
 
