@@ -31,6 +31,7 @@ class PuppetGem < FPM::Cookery::Recipe
     gem_install 'unicorn',            '4.8.2'
     gem_install 'rack',               '1.5.2'
     gem_install 'pg',                 '0.17.1'
+    gem_install 'bundler',            '1.6.4'
     gem_install name,                 version
   end
 
