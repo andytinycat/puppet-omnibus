@@ -72,7 +72,8 @@ class PuppetOmnibus < FPM::Cookery::Recipe
                                          '/var/run/puppet',
                                          '/etc/mcollective/plugin.d',
                                          '/etc/mcollective/ssl/clients',
-                                         '/etc/init.d/mcollective'
+                                         '/etc/init.d/mcollective',
+                                         '/etc/profile.d/puppet.sh'
                                            
 
   def build
