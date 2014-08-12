@@ -129,7 +129,7 @@ set -e
 BIN_PATH="#{destdir}/bin"
 BINS="puppet facter hiera mco eyaml"
 
-if [ "$1" != "upgrade" ]; then
+if [ "$1" = 0 ] || [ "$1" != "upgrade" ]; then
   for BIN in $BINS; do
     update-alternatives --remove $BIN $BIN_PATH/$BIN
   done
