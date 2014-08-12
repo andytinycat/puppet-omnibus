@@ -39,7 +39,8 @@ class PuppetOmnibus < FPM::Cookery::Recipe
   omnibus_recipes 'libyaml',
                   'ruby',
                   'mcollective',
-                  'puppet'
+                  'puppet',
+                  'aws'
 
 
   if ENV.has_key?('PKG_VERSION')
