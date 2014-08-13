@@ -86,7 +86,7 @@ class PuppetGem < FPM::Cookery::Recipe
       chmod 0755, etc('init.d/puppet')
 
       # Set the real daemon path in initscript defaults
-      safesystem "echo DAEMON=#{destdir}/bin/puppet >> /etc/default/puppet"
+      safesystem "echo DAEMON=#{destdir}/../bin/puppet >> /etc/default/puppet"
     end
   end
 
@@ -98,7 +98,7 @@ class PuppetGem < FPM::Cookery::Recipe
       chmod 0755, etc('init.d/puppet')
 
       # Set the real daemon path in initscript defaults
-      safesystem "echo PUPPETD=#{destdir}/bin/puppet >> /etc/sysconfig/puppet"
+      safesystem "echo PUPPETD=#{destdir}/../bin/puppet >> /etc/sysconfig/puppet"
     end
   end
 
@@ -109,7 +109,7 @@ class PuppetGem < FPM::Cookery::Recipe
 #!/bin/sh
 set -e
 
-BIN_PATH="#{destdir}/bin"
+BIN_PATH="#{destdir}/../bin"
 BINS="puppet facter hiera mco eyaml"
 
 for BIN in $BINS; do
@@ -126,7 +126,7 @@ done
 #!/bin/sh
 set -e
 
-BIN_PATH="#{destdir}/bin"
+BIN_PATH="#{destdir}/../bin"
 BINS="puppet facter hiera mco eyaml"
 
 if [ "$1" = 0 ] || [ "$1" != "upgrade" ]; then
