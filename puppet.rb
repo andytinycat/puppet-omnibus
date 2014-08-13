@@ -76,7 +76,6 @@ class PuppetGem < FPM::Cookery::Recipe
       chmod 0771, var('lib/puppet/ssl')
       var('run/puppet').mkdir
       destdir('share/puppet/ext/rack/files').install workdir('ext/puppet/rack/config.ru')  => 'config.ru'
-      etc('profile.d').install workdir('ext/puppet/all/puppet.sh') => 'puppet.sh'
   end
 
   platforms [:ubuntu, :debian] do
