@@ -18,5 +18,19 @@ unset RUBYOPT BUNDLE_GEMFILE BUNDLE_BIN_PATH GEM_HOME GEM_PATH GEMRC
 # What are we?
 BIN="$( basename $0 )"
 
+# Forces the use of the --write-catalog-summary switch when using puppet apply
+if [[ $BIN == "puppet" && $1 == "apply" ]]; then
+
+    # Check if --write-catalog-summary switch has been used; Returns 0 if not
+    echo "$@" | grep -vq -- "--write-catalog-summary"
+
+    if [[ $? == 0 ]]; then
+        echo "Applying --write-catalog-summary option by default"
+        shift
+        set -- apply --write-catalog-summary "$@"
+    fi
+
+fi
+
 # Call the actual bin with our arguments
 ${EMBEDDED_DIR}/bin/${BIN} "$@"

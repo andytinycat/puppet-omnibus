@@ -74,6 +74,7 @@ class PuppetGem < FPM::Cookery::Recipe
       etc('puppet').mkdir
       var('lib/puppet/ssl/certs').mkpath
       chmod 0771, var('lib/puppet/ssl')
+      var('lib/puppet/state').mkpath
       var('run/puppet').mkdir
       destdir('share/puppet/ext/rack/files').install workdir('ext/puppet/rack/config.ru')  => 'config.ru'
   end
@@ -86,7 +87,7 @@ class PuppetGem < FPM::Cookery::Recipe
       chmod 0755, etc('init.d/puppet')
 
       # Set the real daemon path in initscript defaults
-      safesystem "echo DAEMON=#{destdir}/bin/puppet >> /etc/default/puppet"
+      safesystem "echo DAEMON=#{destdir}/../bin/puppet >> /etc/default/puppet"
     end
   end
 
@@ -98,7 +99,7 @@ class PuppetGem < FPM::Cookery::Recipe
       chmod 0755, etc('init.d/puppet')
 
       # Set the real daemon path in initscript defaults
-      safesystem "echo PUPPETD=#{destdir}/bin/puppet >> /etc/sysconfig/puppet"
+      safesystem "echo PUPPETD=#{destdir}/../bin/puppet >> /etc/sysconfig/puppet"
     end
   end
 
@@ -109,7 +110,7 @@ class PuppetGem < FPM::Cookery::Recipe
 #!/bin/sh
 set -e
 
-BIN_PATH="#{destdir}/bin"
+BIN_PATH="#{destdir}/../bin"
 BINS="puppet facter hiera mco eyaml"
 
 for BIN in $BINS; do
@@ -126,7 +127,7 @@ done
 #!/bin/sh
 set -e
 
-BIN_PATH="#{destdir}/bin"
+BIN_PATH="#{destdir}/../bin"
 BINS="puppet facter hiera mco eyaml"
 
 if [ "$1" = 0 ] || [ "$1" = 'remove' ]; then
@@ -167,6 +168,7 @@ useradd -r -u 52 -g puppet -d %{_localstatedir}/lib/puppet -s /sbin/nologin \
 chown puppet:puppet %{_localstatedir}/lib/puppet
 chown puppet %{_localstatedir}/lib/puppet/ssl
 chown puppet %{_localstatedir}/lib/puppet/ssl/certs
+chown puppet %{_localstatedir}/lib/puppet/state
 
 
 exit 0
@@ -190,6 +192,7 @@ fi
 chown puppet:puppet /var/lib/puppet
 chown puppet /var/lib/puppet/ssl
 chown puppet /var/lib/puppet/ssl/certs
+chown puppet /var/lib/puppet/state
 
 exit 0
         __POSTINST
