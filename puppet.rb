@@ -74,6 +74,7 @@ class PuppetGem < FPM::Cookery::Recipe
       etc('puppet').mkdir
       var('lib/puppet/ssl/certs').mkpath
       chmod 0771, var('lib/puppet/ssl')
+      var('lib/puppet/state').mkpath
       var('run/puppet').mkdir
       destdir('share/puppet/ext/rack/files').install workdir('ext/puppet/rack/config.ru')  => 'config.ru'
   end
@@ -167,6 +168,7 @@ useradd -r -u 52 -g puppet -d %{_localstatedir}/lib/puppet -s /sbin/nologin \
 chown puppet:puppet %{_localstatedir}/lib/puppet
 chown puppet %{_localstatedir}/lib/puppet/ssl
 chown puppet %{_localstatedir}/lib/puppet/ssl/certs
+chown puppet %{_localstatedir}/lib/puppet/state
 
 
 exit 0
@@ -190,6 +192,7 @@ fi
 chown puppet:puppet /var/lib/puppet
 chown puppet /var/lib/puppet/ssl
 chown puppet /var/lib/puppet/ssl/certs
+chown puppet /var/lib/puppet/state
 
 exit 0
         __POSTINST
