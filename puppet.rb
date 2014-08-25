@@ -32,6 +32,7 @@ class PuppetGem < FPM::Cookery::Recipe
     gem_install 'rack',               '1.5.2'
     gem_install 'pg',                 '0.17.1'
     gem_install 'bundler',            '1.6.4'
+    gem_install 'librarian-puppet',   '1.3.2'
     gem_install name,                 version
   end
 
@@ -51,6 +52,7 @@ class PuppetGem < FPM::Cookery::Recipe
     destdir('../bin').install workdir('omnibus.bin'), 'mco'
     destdir('../bin').install workdir('omnibus.bin'), 'zcollective'
     destdir('../bin').install workdir('omnibus.bin'), 'eyaml'
+    destdir('../bin').install workdir('omnibus.bin'), 'librarian-puppet'
      
     with_trueprefix do
       # Symlink binaries to PATH using update-alternatives
