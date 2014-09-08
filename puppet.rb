@@ -113,7 +113,7 @@ class PuppetGem < FPM::Cookery::Recipe
 set -e
 
 BIN_PATH="#{destdir}/../bin"
-BINS="puppet facter hiera mco eyaml"
+BINS="puppet facter hiera mco eyaml zcollective"
 
 for BIN in $BINS; do
   update-alternatives --install /usr/bin/$BIN $BIN $BIN_PATH/$BIN 100
@@ -130,7 +130,7 @@ done
 set -e
 
 BIN_PATH="#{destdir}/../bin"
-BINS="puppet facter hiera mco eyaml"
+BINS="puppet facter hiera mco eyaml zcollective"
 
 if [ "$1" = 0 ] || [ "$1" = 'remove' ]; then
   for BIN in $BINS; do

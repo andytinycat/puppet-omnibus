@@ -18,6 +18,7 @@ usage() {
 
 clean_up() {
     box_type=$1
+    echo Cleaning up - calling vagrant destroy -f $1
     vagrant destroy -f ${box_type}
 }
 
