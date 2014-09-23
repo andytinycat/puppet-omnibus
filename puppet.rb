@@ -27,12 +27,13 @@ class PuppetGem < FPM::Cookery::Recipe
     gem_install 'ruby-shadow',        '2.2.0'
     gem_install 'gpgme',              '2.0.2'
     gem_install 'hiera-eyaml',        '2.0.2'
-    gem_install 'zcollective',        '0.0.9'
+    gem_install 'zcollective',        '0.0.11'
     gem_install 'zabbixapi',          '2.0.0'
     gem_install 'unicorn',            '4.8.2'
     gem_install 'rack',               '1.5.2'
     gem_install 'pg',                 '0.17.1'
     gem_install 'bundler',            '1.6.4'
+    gem_install 'librarian-puppet',   '1.3.2'
     gem_install name,                 version
   end
 
@@ -52,6 +53,7 @@ class PuppetGem < FPM::Cookery::Recipe
     destdir('../bin').install workdir('omnibus.bin'), 'mco'
     destdir('../bin').install workdir('omnibus.bin'), 'zcollective'
     destdir('../bin').install workdir('omnibus.bin'), 'eyaml'
+    destdir('../bin').install workdir('omnibus.bin'), 'librarian-puppet'
      
     with_trueprefix do
       # Symlink binaries to PATH using update-alternatives
@@ -75,6 +77,7 @@ class PuppetGem < FPM::Cookery::Recipe
       etc('puppet').mkdir
       var('lib/puppet/ssl/certs').mkpath
       chmod 0771, var('lib/puppet/ssl')
+      var('lib/puppet/state').mkpath
       var('run/puppet').mkdir
       destdir('share/puppet/ext/rack/files').install workdir('ext/puppet/rack/config.ru')  => 'config.ru'
   end
@@ -87,7 +90,7 @@ class PuppetGem < FPM::Cookery::Recipe
       chmod 0755, etc('init.d/puppet')
 
       # Set the real daemon path in initscript defaults
-      safesystem "echo DAEMON=#{destdir}/bin/puppet >> /etc/default/puppet"
+      safesystem "echo DAEMON=#{destdir}/../bin/puppet >> /etc/default/puppet"
     end
   end
 
@@ -99,7 +102,7 @@ class PuppetGem < FPM::Cookery::Recipe
       chmod 0755, etc('init.d/puppet')
 
       # Set the real daemon path in initscript defaults
-      safesystem "echo PUPPETD=#{destdir}/bin/puppet >> /etc/sysconfig/puppet"
+      safesystem "echo PUPPETD=#{destdir}/../bin/puppet >> /etc/sysconfig/puppet"
     end
   end
 
@@ -110,8 +113,8 @@ class PuppetGem < FPM::Cookery::Recipe
 #!/bin/sh
 set -e
 
-BIN_PATH="#{destdir}/bin"
-BINS="puppet facter hiera mco eyaml"
+BIN_PATH="#{destdir}/../bin"
+BINS="puppet facter hiera mco eyaml zcollective"
 
 for BIN in $BINS; do
   update-alternatives --install /usr/bin/$BIN $BIN $BIN_PATH/$BIN 100
@@ -127,8 +130,8 @@ done
 #!/bin/sh
 set -e
 
-BIN_PATH="#{destdir}/bin"
-BINS="puppet facter hiera mco eyaml"
+BIN_PATH="#{destdir}/../bin"
+BINS="puppet facter hiera mco eyaml zcollective"
 
 if [ "$1" = 0 ] || [ "$1" = 'remove' ]; then
   for BIN in $BINS; do
@@ -168,6 +171,7 @@ useradd -r -u 52 -g puppet -d %{_localstatedir}/lib/puppet -s /sbin/nologin \
 chown puppet:puppet %{_localstatedir}/lib/puppet
 chown puppet %{_localstatedir}/lib/puppet/ssl
 chown puppet %{_localstatedir}/lib/puppet/ssl/certs
+chown puppet %{_localstatedir}/lib/puppet/state
 
 
 exit 0
@@ -191,6 +195,7 @@ fi
 chown puppet:puppet /var/lib/puppet
 chown puppet /var/lib/puppet/ssl
 chown puppet /var/lib/puppet/ssl/certs
+chown puppet /var/lib/puppet/state
 
 exit 0
         __POSTINST
