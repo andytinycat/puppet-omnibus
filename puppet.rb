@@ -27,7 +27,7 @@ class PuppetGem < FPM::Cookery::Recipe
     gem_install 'ruby-shadow',        '2.2.0'
     gem_install 'gpgme',              '2.0.2'
     gem_install 'hiera-eyaml',        '2.0.2'
-    gem_install 'zcollective',        '0.0.11'
+    gem_install 'zcollective',        '0.0.12'
     gem_install 'zabbixapi',          '2.0.0'
     gem_install 'unicorn',            '4.8.2'
     gem_install 'rack',               '1.5.2'
