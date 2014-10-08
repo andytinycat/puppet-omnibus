@@ -20,7 +20,6 @@ class PuppetOmnibus < FPM::Cookery::Recipe
     'automation-puppet',
   ]
 
-  conflicts automation_packages
   replaces  automation_packages
 
   platforms [:ubuntu, :debian] do
