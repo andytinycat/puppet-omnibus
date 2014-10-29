@@ -2,7 +2,7 @@ class AwsGems < FPM::Cookery::Recipe
   description 'Aws-support gems'
 
   name 'aws'
-  version '1.0.0'
+  version '1.1.0'
   source "nothing", :with => :noop
 
   platforms [:ubuntu, :debian] do
@@ -16,8 +16,8 @@ class AwsGems < FPM::Cookery::Recipe
   end
 
   def build
-    gem_install 'aws-sdk',     '1.8.5'
-    gem_install 'fog',         '1.10.0'
+    gem_install 'aws-sdk',     '1.57.0'
+    gem_install 'fog',         '1.24.0'
   end
 
   def install
