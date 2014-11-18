@@ -1,36 +1,25 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant.configure("2") do |config|
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.synced_folder "./", "/vagrant"
 
-  config.vm.provider "virtualbox" do |v|
-    v.customize ["modifyvm", :id, "--memory", "1024"]
-    v.customize ["modifyvm", :id, "--cpus", "2"]
+  config.vm.provider "virtualbox" do |vb|
+    vb.gui = true
+    vb.customize ["modifyvm", :id, "--memory", "512"]
   end
 
-  config.vm.define :centos6 do |node1|
-    node1.vm.hostname = "centos6"
-    node1.vm.box      = "centos6"
-    node1.vm.box_url  = "http://puppet-vagrant-boxes.puppetlabs.com/centos-64-x64-vbox4210.box"
+  config.vm.define :centos6_6 do |centos|
+    centos.vm.box = "chef/centos-6.6"
+    centos.vm.provision "shell", :path => "./provisioning/centos.sh", :privileged => false
   end
 
-  config.vm.define :fedora18 do |node2|
-    node2.vm.hostname = "fedora18"
-    node2.vm.box      = "fedora18"
-    node2.vm.box_url  = "http://puppet-vagrant-boxes.puppetlabs.com/fedora-18-x64-vbox4210.box"
-  end
-
-  config.vm.define :precise do |node3|
-    node3.vm.hostname = "precise"
-    node3.vm.box      = "precise"
-    node3.vm.box_url  = "http://puppet-vagrant-boxes.puppetlabs.com/ubuntu-server-12042-x64-vbox4210.box"
-  end
-
-  config.vm.provision "puppet" do |puppet|
-    puppet.manifests_path = "puppet_provisioning"
-    puppet.manifest_file  = "site.pp"
+  config.vm.define :ubuntu12_04 do |ubuntu|
+    ubuntu.vm.box = "chef/ubuntu-12.04"
+    ubuntu.vm.provision "shell", :path => "./provisioning/ubuntu.sh", :privileged => false
   end
 
 end

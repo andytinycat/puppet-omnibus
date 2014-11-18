@@ -5,12 +5,12 @@ GEM
     addressable (2.3.6)
     arr-pm (0.0.9)
       cabin (> 0)
-    backports (3.6.3)
+    backports (3.6.4)
     cabin (0.6.1)
     childprocess (0.5.5)
       ffi (~> 1.0, >= 1.0.11)
     clamp (0.6.3)
-    facter (2.2.0)
+    facter (2.3.0)
       CFPropertyList (~> 2.2.6)
     ffi (1.9.6)
     fpm (1.0.2)
@@ -28,7 +28,7 @@ GEM
       fpm (~> 1.0.0)
       puppet (>= 3.4.3)
       systemu
-    ftw (0.0.40)
+    ftw (0.0.41)
       addressable
       backports (>= 2.6.2)
       cabin (> 0)
@@ -38,7 +38,7 @@ GEM
     http_parser.rb (0.5.3)
     json (1.8.1)
     json_pure (1.8.1)
-    puppet (3.7.2)
+    puppet (3.7.3)
       facter (> 1.6, < 3)
       hiera (~> 1.0)
       json_pure
