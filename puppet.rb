@@ -118,7 +118,7 @@ set -e
 BIN_PATH="#{destdir}/bin"
 BINS="puppet facter hiera"
 
-if [ "$1" != "upgrade" ]; then
+if [ "$1" -eq 0 ]; then
   for BIN in $BINS; do
     update-alternatives --remove $BIN $BIN_PATH/$BIN
   done
